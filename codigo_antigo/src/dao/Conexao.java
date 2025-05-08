@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 
 public class Conexao {
     private static final String url = "jdbc:mysql://localhost:3306/showzao";
-    private static final String USER = "root";
+    private static final String USER = "roo";
     private static final String PASSWORD = "";
 
     public static Connection getConexao() throws SQLException {
