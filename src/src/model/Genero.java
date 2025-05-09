@@ -125,8 +125,8 @@ public class Genero {
         }
     }
 
-    // Permite ao usuário escolher um gênero qualquer e a partir da lista de gêneros cadastrados,
-    // obtida através do método verificarOuCadastrar
+    // Permite ao usuário escolher um gênero existente a partir da lista de gêneros cadastrados,
+    // obtida através do método verificarOuCadastrar.
     private static Genero escolherGenero(List<Genero> generos) {
         // Verifica se há gêneros cadastrados
         if (generos.isEmpty()) {
