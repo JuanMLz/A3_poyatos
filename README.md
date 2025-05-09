@@ -30,8 +30,18 @@ As principais funcionalidades do código original incluem:
    </details>
 
 2. **Mostrar Shows**: Exibe todos os shows cadastrados.
-3. **Pesquisar por Gênero**: Permite pesquisar shows por gênero.
-4. **Menu de Cadastro**: Permite ao usuário cadastrar shows, gêneros musicais e locais.
+   
+   <details>
+     <summary>Clique para ver a imagem</summary>
+     <img src="https://snipboard.io/RjTflr.jpg" alt="Imagem de Mostrar Shows" width="400px">
+   </details>
+
+3. **Menu de Cadastro**: Exibe o menu de cadastro de shows, gêneros e locais.
+   
+   <details>
+     <summary>Clique para ver a imagem</summary>
+     <img src="https://snipboard.io/ko6Vjs.jpg" alt="Imagem do Menu de Cadastro" width="400px">
+   </details>
 
 Este código apresenta algumas falhas em termos de organização, clareza e design, o que fez dele um bom candidato para refatoração.
 
