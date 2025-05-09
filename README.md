@@ -23,6 +23,8 @@ O código que foi enviado como base para o trabalho gerencia shows, gêneros mus
 As principais funcionalidades do código original incluem:
 
 1. **Menu Principal**: Exibe as opções para o usuário.
+   ![Imagem do Menu Principal](https://snipboard.io/6OgXui.jpg)
+
 2. **Mostrar Shows**: Exibe todos os shows cadastrados.
 3. **Pesquisar por Gênero**: Permite pesquisar shows por gênero.
 4. **Menu de Cadastro**: Permite ao usuário cadastrar shows, gêneros musicais e locais.
