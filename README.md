@@ -1,10 +1,10 @@
-# A3 DE GESTÃO E QUALIDADE DE SOFTWARE
+# <p style="color:blue;">A3 DE GESTÃO E QUALIDADE DE SOFTWARE</p>
 
-## Professores:
+## <p style="color:green;">Professores:</p>
 - Henrique Poyatos
 - Magda
 
-## Alunos:
+## <p style="color:green;">Alunos:</p>
 - Luís Felipe Moura Borges RA: 824154663
 - Juan Moraes Lopes RA: 12523219000
 - Gabriel Parra Boito RA: 824152876
@@ -12,11 +12,11 @@
 - Lucas Henrique Rocha Lourenço RA: 323224861
 - Vinícius Di Franco Heitor RA: 12524126336
 
-## Descrição do Projeto
+## <p style="color:green;">Descrição do Projeto</p>
 
 Este projeto tem como objetivo a **refatoração de um código de baixa qualidade**. O código original foi escrito de forma simples, com diversas oportunidades de melhoria em termos de estrutura, legibilidade, desempenho, design e manutenibilidade. Nossa tarefa nesta A3 é refatorar esse código para aplicarmos boas práticas de desenvolvimento de software.
 
-### O Código Original
+### <p style="color:purple;">O Código Original</p>
 
 O código que foi enviado como base para o trabalho gerencia shows, gêneros musicais e locais, permitindo que o usuário visualize, pesquise e cadastre novos shows. O sistema funciona através de um menu interativo que apresenta as opções de visualizar, pesquisar ou cadastrar shows, gêneros e locais.
 
@@ -45,7 +45,7 @@ As principais funcionalidades do código original incluem:
 
 Este código apresenta algumas falhas em termos de organização, clareza e design, o que fez dele um bom candidato para refatoração.
 
-### Objetivos da Refatoração
+### <p style="color:purple;">Objetivos da Refatoração</p>
 
 A refatoração deste código visa melhorar os seguintes aspectos:
 
@@ -55,7 +55,7 @@ A refatoração deste código visa melhorar os seguintes aspectos:
 4. **Manutenibilidade**: Facilitar futuras manutenções e expansões do código, aplicando boas práticas como a utilização de métodos e classes bem definidas.
 5. **Melhora do Visual**: Melhorar a interface do usuário, tornando-a mais visualmente bonita.
 
-### Código Atualizado
+### <p style="color:purple;">Código Atualizado</p>
 
 Este código atualizado visa aplicar as melhorias indicadas na refatoração, sem incluir o conteúdo específico ainda.
 
@@ -82,7 +82,7 @@ Este código atualizado visa aplicar as melhorias indicadas na refatoração, se
 
 Este código atualizado deverá refletir as melhorias em termos de organização, clareza, design, e usabilidade.
 
-### Melhorias
+### <p style="color:orange;">Melhorias</p>
 
 Durante a refatoração, diversas melhorias foram implementadas para otimizar o código e aprimorar a experiência do usuário. As principais melhorias incluem:
 
