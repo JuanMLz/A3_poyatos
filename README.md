@@ -26,21 +26,21 @@ As principais funcionalidades do código original incluem:
    
    <details>
      <summary>Clique para ver a imagem</summary>
-     <img src="https://snipboard.io/6OgXui.jpg" alt="Imagem do Menu Principal" width="400px">
+     <img src="URL_DA_IMAGEM" alt="Imagem do Menu Principal" width="400px">
    </details>
 
 2. **Mostrar Shows**: Exibe todos os shows cadastrados.
    
    <details>
      <summary>Clique para ver a imagem</summary>
-     <img src="https://snipboard.io/RjTflr.jpg" alt="Imagem de Mostrar Shows" width="400px">
+     <img src="URL_DA_IMAGEM" alt="Imagem de Mostrar Shows" width="400px">
    </details>
 
 3. **Menu de Cadastro**: Exibe o menu de cadastro de shows, gêneros e locais.
    
    <details>
      <summary>Clique para ver a imagem</summary>
-     <img src="https://snipboard.io/ko6Vjs.jpg" alt="Imagem do Menu de Cadastro" width="400px">
+     <img src="URL_DA_IMAGEM" alt="Imagem do Menu de Cadastro" width="400px">
    </details>
 
 Este código apresenta algumas falhas em termos de organização, clareza e design, o que fez dele um bom candidato para refatoração.
@@ -54,3 +54,44 @@ A refatoração deste código visa melhorar os seguintes aspectos:
 3. **Desempenho**: Melhorar a performance do código, eliminando redundâncias e otimizando partes que possam ser mais eficientes.
 4. **Manutenibilidade**: Facilitar futuras manutenções e expansões do código, aplicando boas práticas como a utilização de métodos e classes bem definidas.
 5. **Melhora do Visual**: Melhorar a interface do usuário, tornando-a mais visualmente bonita.
+
+### Código Atualizado
+
+Este código atualizado visa aplicar as melhorias indicadas na refatoração, sem incluir o conteúdo específico ainda.
+
+1. **Menu Principal**: Exibe as opções para o usuário.
+
+   <details>
+     <summary>Clique para ver a imagem</summary>
+     <img src="URL_DA_IMAGEM" alt="Imagem do Menu Principal" width="400px">
+   </details>
+
+2. **Mostrar Shows**: Exibe todos os shows cadastrados.
+
+   <details>
+     <summary>Clique para ver a imagem</summary>
+     <img src="URL_DA_IMAGEM" alt="Imagem de Mostrar Shows" width="400px">
+   </details>
+
+3. **Menu de Cadastro**: Exibe o menu de cadastro de shows, gêneros e locais.
+
+   <details>
+     <summary>Clique para ver a imagem</summary>
+     <img src="URL_DA_IMAGEM" alt="Imagem do Menu de Cadastro" width="400px">
+   </details>
+
+Este código atualizado deverá refletir as melhorias em termos de organização, clareza, design, e usabilidade.
+
+### Melhorias
+
+Durante a refatoração, diversas melhorias foram implementadas para otimizar o código e aprimorar a experiência do usuário. As principais melhorias incluem:
+
+1. **Refatoração do Código**: Descrição das melhorias feitas.
+   
+2. **Eliminação de Redundâncias**: Descrição das melhorias feitas.
+
+3. **Adoção de Boas Práticas**: Descrição das melhorias feitas.
+
+4. **Melhorias no Desempenho**: Descrição das melhorias feitas.
+
+5. **Interface de Usuário (UI)**: Descrição das melhorias feitas.
