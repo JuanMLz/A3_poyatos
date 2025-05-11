@@ -1,10 +1,10 @@
-# <p style="color:blue;">A3 DE GESTÃO E QUALIDADE DE SOFTWARE</p>
+# :blue_book: **A3 DE GESTÃO E QUALIDADE DE SOFTWARE**
 
-## <p style="color:green;">Professores:</p>
+## :school: **Professores:**
 - Henrique Poyatos
 - Magda
 
-## <p style="color:green;">Alunos:</p>
+## :busts_in_silhouette: **Alunos:**
 - Luís Felipe Moura Borges RA: 824154663
 - Juan Moraes Lopes RA: 12523219000
 - Gabriel Parra Boito RA: 824152876
@@ -12,11 +12,11 @@
 - Lucas Henrique Rocha Lourenço RA: 323224861
 - Vinícius Di Franco Heitor RA: 12524126336
 
-## <p style="color:green;">Descrição do Projeto</p>
+## :memo: **Descrição do Projeto**
 
 Este projeto tem como objetivo a **refatoração de um código de baixa qualidade**. O código original foi escrito de forma simples, com diversas oportunidades de melhoria em termos de estrutura, legibilidade, desempenho, design e manutenibilidade. Nossa tarefa nesta A3 é refatorar esse código para aplicarmos boas práticas de desenvolvimento de software.
 
-### <p style="color:purple;">O Código Original</p>
+### :page_with_curl: **O Código Original**
 
 O código que foi enviado como base para o trabalho gerencia shows, gêneros musicais e locais, permitindo que o usuário visualize, pesquise e cadastre novos shows. O sistema funciona através de um menu interativo que apresenta as opções de visualizar, pesquisar ou cadastrar shows, gêneros e locais.
 
@@ -45,7 +45,7 @@ As principais funcionalidades do código original incluem:
 
 Este código apresenta algumas falhas em termos de organização, clareza e design, o que fez dele um bom candidato para refatoração.
 
-### <p style="color:purple;">Objetivos da Refatoração</p>
+### :dart: **Objetivos da Refatoração**
 
 A refatoração deste código visa melhorar os seguintes aspectos:
 
@@ -55,43 +55,20 @@ A refatoração deste código visa melhorar os seguintes aspectos:
 4. **Manutenibilidade**: Facilitar futuras manutenções e expansões do código, aplicando boas práticas como a utilização de métodos e classes bem definidas.
 5. **Melhora do Visual**: Melhorar a interface do usuário, tornando-a mais visualmente bonita.
 
-### <p style="color:purple;">Código Atualizado</p>
+### :wrench: **Código Atualizado**
 
 Este código atualizado visa aplicar as melhorias indicadas na refatoração, sem incluir o conteúdo específico ainda.
 
 1. **Menu Principal**: Exibe as opções para o usuário.
-
-   <details>
-     <summary>Clique para ver a imagem</summary>
-     <img src="URL_DA_IMAGEM" alt="Imagem do Menu Principal" width="400px">
-   </details>
-
 2. **Mostrar Shows**: Exibe todos os shows cadastrados.
-
-   <details>
-     <summary>Clique para ver a imagem</summary>
-     <img src="URL_DA_IMAGEM" alt="Imagem de Mostrar Shows" width="400px">
-   </details>
-
 3. **Menu de Cadastro**: Exibe o menu de cadastro de shows, gêneros e locais.
 
-   <details>
-     <summary>Clique para ver a imagem</summary>
-     <img src="URL_DA_IMAGEM" alt="Imagem do Menu de Cadastro" width="400px">
-   </details>
-
-Este código atualizado deverá refletir as melhorias em termos de organização, clareza, design, e usabilidade.
-
-### <p style="color:orange;">Melhorias</p>
+### :sparkles: **Melhorias**
 
 Durante a refatoração, diversas melhorias foram implementadas para otimizar o código e aprimorar a experiência do usuário. As principais melhorias incluem:
 
 1. **Refatoração do Código**: Descrição das melhorias feitas.
-   
 2. **Eliminação de Redundâncias**: Descrição das melhorias feitas.
-
 3. **Adoção de Boas Práticas**: Descrição das melhorias feitas.
-
 4. **Melhorias no Desempenho**: Descrição das melhorias feitas.
-
 5. **Interface de Usuário (UI)**: Descrição das melhorias feitas.
