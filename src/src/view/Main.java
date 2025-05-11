@@ -1,155 +1,199 @@
 package view;
 
-import java.util.List;
-import javax.swing.JOptionPane;
 import model.Genero;
 import model.Local;
 import model.Show;
 
+import javax.swing.*;
+import java.awt.*;
+import java.util.List;
+
 public class Main {
-    // Metodo principal que inicia o programa
-    public static void main(String[] args) throws Exception {
 
-        // Loop principal que mantem o codigo executando até o usuario escolher sair
-        int opcao = -1;
-        do {
-            opcao = Menu(); // Chama o metodo que exibe as opções clicáveis
-            switch (opcao) {
-                case 0:
-                    mostrarTodosOsShows();
-                    break;
-                case 1:
-                    pesquisarPorGenero();
-                    break;
-                case 2:
-                    menuCadastro();
-                    break;
-                case 3:
-                    JOptionPane.showMessageDialog(null, "Saindo do programa.");
-                    break;
-                default:
-                    JOptionPane.showMessageDialog(null, "Digite uma das opções!");
-                    break;
-            }
-        } while (opcao != 3); // 3 corresponde ao "Sair"
+    private static JFrame frame;
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(Main::criarInterface);
     }
 
-    // Metodo que exibe o menu principal com opções clicáveis e retorna a opção do usuário
-    public static int Menu() {
-        String texto = "Showzão\nTodos seus shows em um só lugar!\n\n" +
-                        "Escolha uma das opções abaixo:";
+    public static void criarInterface() {
+        frame = new JFrame("🎵 Showzão - Todos seus shows em um só lugar!");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(420, 370);
+        frame.setLocationRelativeTo(null);
+        frame.setResizable(false);
 
-        // Definindo os botões clicáveis
-        Object[] opcoes = {"Mostrar Shows", "Pesquisar Show", "Cadastrar", "Sair"};
+        JPanel painel = new JPanel();
+        painel.setLayout(new BorderLayout());
+        painel.setBackground(new Color(245, 245, 245));
+        painel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        // Exibe o dialogo com botões clicáveis
-        int opcao = JOptionPane.showOptionDialog(null, texto, "Menu Principal",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoes, opcoes[0]);
+        JLabel titulo = new JLabel("🎵 Showzão", SwingConstants.CENTER);
+        titulo.setFont(new Font("Segoe UI Emoji", Font.BOLD, 24));
+        titulo.setForeground(new Color(44, 62, 80));
 
-        // O valor retornado é o índice da opção selecionada (0, 1, 2 ou 3)
-        return opcao;
+        JLabel subtitulo = new JLabel("Todos seus shows em um só lugar!", SwingConstants.CENTER);
+        subtitulo.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 14));
+        subtitulo.setForeground(new Color(80, 80, 80));
+
+        JPanel painelTopo = new JPanel(new GridLayout(2, 1));
+        painelTopo.setBackground(new Color(245, 245, 245));
+        painelTopo.add(titulo);
+        painelTopo.add(subtitulo);
+
+        JPanel botoes = new JPanel();
+        botoes.setLayout(new GridLayout(5, 1, 12, 12));
+        botoes.setBackground(new Color(245, 245, 245));
+
+        JButton btnMostrar = criarBotao("📋 Mostrar Shows");
+        JButton btnPesquisar = criarBotao("🔎 Pesquisar por Gênero");
+        JButton btnCadastrar = criarBotao("📝 Cadastrar");
+        JButton btnSair = criarBotao("🚪 Sair");
+
+        botoes.add(btnMostrar);
+        botoes.add(btnPesquisar);
+        botoes.add(btnCadastrar);
+        botoes.add(btnSair);
+
+        btnMostrar.addActionListener(e -> mostrarTodosOsShows());
+        btnPesquisar.addActionListener(e -> pesquisarPorGenero());
+        btnCadastrar.addActionListener(e -> menuCadastro());
+        btnSair.addActionListener(e -> {
+            JOptionPane.showMessageDialog(frame, "Saindo do programa.");
+            System.exit(0);
+        });
+
+        painel.add(painelTopo, BorderLayout.NORTH);
+        painel.add(botoes, BorderLayout.CENTER);
+
+        frame.setContentPane(painel);
+        frame.setVisible(true);
     }
 
-    // Metodo que exibe todos os shows cadastrados
+    private static JButton criarBotao(String texto) {
+        JButton btn = new JButton(texto);
+        btn.setFocusPainted(false);
+        btn.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 14)); // Alterado aqui
+        btn.setBackground(new Color(220, 220, 220));
+        btn.setForeground(Color.DARK_GRAY);
+        btn.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(180, 180, 180)),
+            BorderFactory.createEmptyBorder(10, 15, 10, 15)
+        ));
+        return btn;
+    }
+
+    private static String inputDialogModern(String titulo, String mensagem) {
+        JTextField textField = new JTextField(20);
+        JPanel panel = new JPanel(new BorderLayout(5, 5));
+        panel.setBackground(new Color(245, 245, 245));
+        panel.add(new JLabel(mensagem), BorderLayout.NORTH);
+        panel.add(textField, BorderLayout.CENTER);
+
+        int resultado = JOptionPane.showConfirmDialog(
+            frame,
+            panel,
+            titulo,
+            JOptionPane.OK_CANCEL_OPTION,
+            JOptionPane.PLAIN_MESSAGE
+        );
+
+        if (resultado == JOptionPane.OK_OPTION) {
+            return textField.getText().trim();
+        }
+        return null;
+    }
+
     public static void mostrarTodosOsShows() {
-        String listaShows = Show.montarStringShows(); // Obtém a lista formatada de shows
+        String listaShows = Show.montarStringShows();
         if (listaShows.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Não há shows cadastrados.");
+            JOptionPane.showMessageDialog(frame, "Não há shows cadastrados.");
         } else {
-            JOptionPane.showMessageDialog(null, listaShows);
+            JTextArea areaTexto = new JTextArea(listaShows);
+            areaTexto.setEditable(false);
+            areaTexto.setFont(new Font("Monospaced", Font.PLAIN, 12));
+            JScrollPane scrollPane = new JScrollPane(areaTexto);
+            scrollPane.setPreferredSize(new Dimension(350, 200));
+            JOptionPane.showMessageDialog(frame, scrollPane, "Shows Cadastrados", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
-    // Metodo que permite ao usuario pesquisar os shows por gênero
     public static void pesquisarPorGenero() {
         List<Genero> generos = Genero.getGeneros();
-    
-        // Criar um array de strings com o nome dos generos
-        String[] opcoes = generos.stream()
-                                .map(g -> g.nome)
-                                .toArray(String[]::new);
-    
-        // Mostrar diálogo para escolha do gênero
-        String escolha = (String) JOptionPane.showInputDialog(null,
-            "Escolha um gênero:", // Mensagem exibida no dialogo
-            "Pesquisar por Gênero", // Título da janela do dialogo
-            JOptionPane.QUESTION_MESSAGE, // Interrogação
-            null,
-            opcoes,
-            opcoes[0]);
-    
-        // Encontra o ID do gênero escolhido
-        int idGeneroEscolhido = -1;
-        for (Genero genero : generos) {
-            if (genero.nome.equalsIgnoreCase(escolha)) {
-                idGeneroEscolhido = genero.id;
-                break;
-            }
+        if (generos.isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Nenhum gênero cadastrado.");
+            return;
         }
-    
-        // Mostrar apenas os shows do gênero escolhido
-        String listaShows = Show.montarStringShowsPorGenero(idGeneroEscolhido); // Chama o metodo que filtra os shows por genero e formata a string
-        if (listaShows.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Não há shows cadastrados para este gênero.");
-        } else {
-            JOptionPane.showMessageDialog(null, listaShows);
+
+        String[] nomesGeneros = generos.stream().map(g -> g.nome).toArray(String[]::new);
+        JComboBox<String> combo = new JComboBox<>(nomesGeneros);
+        combo.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 14));
+
+        JPanel panel = new JPanel(new BorderLayout(5, 5));
+        panel.setBackground(new Color(245, 245, 245));
+        panel.add(new JLabel("Escolha um gênero:"), BorderLayout.NORTH);
+        panel.add(combo, BorderLayout.CENTER);
+
+        int resultado = JOptionPane.showConfirmDialog(
+            frame,
+            panel,
+            "Pesquisar por Gênero",
+            JOptionPane.OK_CANCEL_OPTION,
+            JOptionPane.PLAIN_MESSAGE
+        );
+
+        if (resultado == JOptionPane.OK_OPTION) {
+            String escolhido = (String) combo.getSelectedItem();
+            int idGenero = generos.stream()
+                                  .filter(g -> g.nome.equalsIgnoreCase(escolhido))
+                                  .findFirst()
+                                  .map(g -> g.id)
+                                  .orElse(-1);
+
+            String listaShows = Show.montarStringShowsPorGenero(idGenero);
+            if (listaShows.isEmpty()) {
+                JOptionPane.showMessageDialog(frame, "Não há shows cadastrados para este gênero.");
+            } else {
+                JTextArea areaTexto = new JTextArea(listaShows);
+                areaTexto.setEditable(false);
+                areaTexto.setFont(new Font("Monospaced", Font.PLAIN, 12));
+                JScrollPane scrollPane = new JScrollPane(areaTexto);
+                scrollPane.setPreferredSize(new Dimension(350, 200));
+                JOptionPane.showMessageDialog(frame, scrollPane, "Shows por Gênero", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
     }
 
-    // Metodo que recebe a opção escolhida no MenuCadastro e chama o metodo correspondente
     public static void menuCadastro() {
-        int opcao;
-        do {
-            opcao = MenuCadastro();
-            switch (opcao) {
-                case 0:
-                    Show.cadastrarShow();
-                    break;
-                case 1:
-                    cadastrarGenero();
-                    break;
-                case 2:
-                    cadastrarLocal();
-                    break;
-                case 3:
-                    JOptionPane.showMessageDialog(null, "Voltando para o menu principal.");
-                    break;
-                default:
-                    JOptionPane.showMessageDialog(null, "Digite uma das opções!");
-                    break;
-            }
-        } while (opcao != 3); // 3 corresponde a "Voltar"
-    }
+        String[] opcoes = {"Cadastrar Show", "Cadastrar Gênero", "Cadastrar Local", "Voltar"};
+        int escolha = JOptionPane.showOptionDialog(frame,
+                "Escolha uma opção de cadastro:",
+                "Cadastro",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                opcoes,
+                opcoes[0]);
 
-    // Metodo que exibe o MenuCadastro, que é a opção 3 do menu principal, e obtem a escolha do usuario
-    public static int MenuCadastro() {
-        String texto = "Showzão - Cadastro\n\n" +
-                        "Escolha o que deseja cadastrar:";
-
-        // Definindo os botões clicáveis
-        Object[] opcoes = {"Cadastrar Show", "Cadastrar Gênero", "Cadastrar Local", "Voltar"};
-
-        // Exibe o dialogo com botões clicáveis
-        int opcao = JOptionPane.showOptionDialog(null, texto, "Cadastro",
-                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoes, opcoes[0]);
-
-        // O valor retornado é o índice da opção selecionada (0, 1, 2 ou 3)
-        return opcao;
-    }
-
-    // Metodo para cadastrar um novo local
-    public static void cadastrarLocal() {
-        String nomeLocal = Local.verificarOuCadastrar(); // Chama o metodo que verifica se já tem o local salvo e cadastra um novo
-        if (nomeLocal != null && !nomeLocal.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Local cadastrado: " + nomeLocal);
+        switch (escolha) {
+            case 0 -> Show.cadastrarShow();
+            case 1 -> cadastrarGenero();
+            case 2 -> cadastrarLocal();
+            default -> {} // Voltar
         }
     }
 
-    // Metodo para cadastrar um novo genero
     public static void cadastrarGenero() {
-        String nomeGenero = Genero.verificarOuCadastrar(); // Chama o metodo que verifica se já tem o genero salvo e cadastra um novo
+        String nomeGenero = Genero.verificarOuCadastrar();
         if (nomeGenero != null && !nomeGenero.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Gênero cadastrado: " + nomeGenero);
+            JOptionPane.showMessageDialog(frame, "🎶 Gênero cadastrado: " + nomeGenero);
+        }
+    }
+
+    public static void cadastrarLocal() {
+        String nomeLocal = Local.verificarOuCadastrar();
+        if (nomeLocal != null && !nomeLocal.isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "📍 Local cadastrado: " + nomeLocal);
         }
     }
 }
