@@ -26,21 +26,21 @@ As principais funcionalidades do código original incluem:
    
    <details>
      <summary>Clique para ver a imagem</summary>
-     <img src="URL_DA_IMAGEM" alt="Imagem do Menu Principal" width="400px">
+     <img src="https://snipboard.io/6OgXui.jpg" alt="Imagem do Menu Principal" width="400px">
    </details>
 
 2. **Mostrar Shows**: Exibe todos os shows cadastrados.
    
    <details>
      <summary>Clique para ver a imagem</summary>
-     <img src="URL_DA_IMAGEM" alt="Imagem de Mostrar Shows" width="400px">
+     <img src="https://snipboard.io/RjTflr.jpg" alt="Imagem de Mostrar Shows" width="400px">
    </details>
 
 3. **Menu de Cadastro**: Exibe o menu de cadastro de shows, gêneros e locais.
    
    <details>
      <summary>Clique para ver a imagem</summary>
-     <img src="URL_DA_IMAGEM" alt="Imagem do Menu de Cadastro" width="400px">
+     <img src="https://snipboard.io/ko6Vjs.jpg" alt="Imagem do Menu de Cadastro" width="400px">
    </details>
 
 Este código apresenta algumas falhas em termos de organização, clareza e design, o que fez dele um bom candidato para refatoração.
