@@ -55,10 +55,10 @@ public class Main {
         botoes.add(btnCadastrar);
         botoes.add(btnSair);
 
-        btnMostrar.addActionListener(_ -> mostrarTodosOsShows());
-        btnPesquisar.addActionListener(_ -> pesquisarPorGenero());
-        btnCadastrar.addActionListener(_ -> menuCadastro());
-        btnSair.addActionListener(_ -> {
+        btnMostrar.addActionListener(e -> mostrarTodosOsShows());
+        btnPesquisar.addActionListener(e -> pesquisarPorGenero());
+        btnCadastrar.addActionListener(e -> menuCadastro());
+        btnSair.addActionListener(e -> {
             JOptionPane.showMessageDialog(frame, "Saindo do programa.");
             System.exit(0);
         });
