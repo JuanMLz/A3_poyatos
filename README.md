@@ -72,5 +72,6 @@ Durante a refatoração, diversas melhorias foram implementadas para otimizar o 
 - Criação e configuração do banco de dados MariaDB, estabelecendo a conexão com o banco para realizar operações de armazenamento e consulta dos dados referentes aos shows, gêneros musicais e locais.  
 - Melhoria na modularização e legibilidade do código, com a utilização de funções e classes bem definidas, tornando o código mais fácil de entender e manter.  
 - Aprimoramento da interface do usuário, com menus interativos e visualmente mais organizados para facilitar a navegação e usabilidade do sistema.
+- Implementação de comentarios em todo o codigo.
 
 
