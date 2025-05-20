@@ -25,7 +25,12 @@ public class Genero {
         this.nome = nome;
     }
 
-    // Método para cadastrar um gênero e retornar o ID gerado
+    /**
+     * Método para cadastrar um gênero e retornar o ID gerado.
+     * 
+     * @param nome Nome do gênero a ser cadastrado.
+     * @return O ID do gênero cadastrado, ou -1 se houver erro.
+     */
     private static int cadastrar(String nome) {
         String sql = "INSERT INTO genero (nome) VALUES (?)";
         try (Connection conn = Conexao.getConexao();
@@ -45,7 +50,11 @@ public class Genero {
         return -1; // Retorna -1 se ocorrer algum erro
     }
 
-    // Método para obter a lista de gêneros
+    /**
+     * Método para obter a lista de gêneros cadastrados.
+     * 
+     * @return Uma lista de objetos Genero com todos os gêneros cadastrados.
+     */
     public static List<Genero> getGeneros() {
         List<Genero> lista = new ArrayList<>();
         String sql = "SELECT id, nome FROM genero ORDER BY nome";
@@ -66,9 +75,12 @@ public class Genero {
         return lista;
     }
 
-    // Verifica se há gêneros cadastrados. Se não houver, oferece a opção de cadastrar um novo gênero.
-    // Se já houver gêneros cadastrados, permite ao usuário escolher entre um gênero existente ou cadastrar um novo.
-    // Retorna o ID do gênero escolhido ou cadastrado, ou null se a operação for cancelada.
+    /**
+     * Verifica se há gêneros cadastrados. Se não houver, oferece a opção de cadastrar um novo gênero.
+     * Se já houver gêneros cadastrados, permite ao usuário escolher entre um gênero existente ou cadastrar um novo.
+     * 
+     * @return O ID do gênero escolhido ou cadastrado, ou null se a operação for cancelada.
+     */
     public static String verificarOuCadastrar() {
         List<Genero> generos = getGeneros();
 
@@ -125,8 +137,12 @@ public class Genero {
         }
     }
 
-    // Permite ao usuário escolher um gênero existente a partir da lista de gêneros cadastrados,
-    // obtida através do método verificarOuCadastrar.
+    /**
+     * Permite ao usuário escolher um gênero existente a partir da lista de gêneros cadastrados.
+     * 
+     * @param generos A lista de gêneros cadastrados.
+     * @return O objeto Genero escolhido pelo usuário, ou null se a operação for cancelada.
+     */
     private static Genero escolherGenero(List<Genero> generos) {
         // Verifica se há gêneros cadastrados
         if (generos.isEmpty()) {
