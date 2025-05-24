@@ -7,7 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JOptionPane;
+import javax.swing.*;
+import java.awt.*;
 
 import dao.Conexao;
 
@@ -82,96 +83,150 @@ public class Genero {
      * @return O ID do gênero escolhido ou cadastrado, ou null se a operação for cancelada.
      */
     public static String verificarOuCadastrar() {
-        List<Genero> generos = getGeneros();
+    List<Genero> generos = getGeneros();
 
-        if (generos.isEmpty()) {
-            int opcaoCadastro = JOptionPane.showConfirmDialog(null,
-                    "Não há gêneros cadastrados. Deseja cadastrar um novo gênero?",
-                    "Cadastro de Gênero", JOptionPane.YES_NO_OPTION);
+    JDialog dialog = new JDialog((Frame) null, "Cadastrar ou Escolher Gênero", true);
+    dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+    dialog.setMinimumSize(new Dimension(450, 400));
+    dialog.setLocationRelativeTo(null);
 
-            if (opcaoCadastro == JOptionPane.YES_OPTION) {
-                String nomeGenero = JOptionPane.showInputDialog("Digite o nome do novo gênero:");
-                if (nomeGenero != null && !nomeGenero.isEmpty()) {
-                    int idGenero = cadastrar(nomeGenero); // Cadastra o novo gênero e retorna o ID
-                    return String.valueOf(idGenero); // Retorna o ID do gênero cadastrado como String
-                } else {
-                    JOptionPane.showMessageDialog(null, "Nome do gênero não pode ser vazio.");
-                    return null; // Retorna null se o nome do gênero for vazio
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Operação cancelada.");
-                return null; // Retorna null se o usuário não deseja cadastrar um novo gênero
-            }
-        } else {
-            // Oferece ao usuário a escolha entre cadastrar um novo gênero ou escolher um existente
-            String[] opcoes = { "Escolher Gênero Existente", "Cadastrar Novo Gênero" };
-            int escolha = JOptionPane.showOptionDialog(null,
-                    "Escolha uma opção:",
-                    "Opções de Gênero",
-                    JOptionPane.DEFAULT_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    opcoes,
-                    opcoes[0]);
+    JPanel painel = new JPanel(new BorderLayout(10, 10));
+    painel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+    painel.setBackground(new Color(245, 245, 245));
 
-            if (escolha == 0) { // Escolher Gênero Existente
-                Genero escolhido = escolherGenero(generos);
-                if (escolhido != null) {
-                    return String.valueOf(escolhido.id); // Retorna o ID do gênero escolhido como String
-                } else {
-                    return null; // Retorna null se o usuário cancelar a escolha
-                }
-            } else if (escolha == 1) { // Cadastrar Novo Gênero
-                String nomeGenero = JOptionPane.showInputDialog("Digite o nome do novo gênero:");
-                if (nomeGenero != null && !nomeGenero.isEmpty()) {
-                    int idGenero = cadastrar(nomeGenero); // Cadastra o novo gênero e retorna o ID
-                    return String.valueOf(idGenero); // Retorna o ID do gênero cadastrado como String
-                } else {
-                    JOptionPane.showMessageDialog(null, "Nome do gênero não pode ser vazio.");
-                    return null; // Retorna null se o nome do gênero for vazio
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Operação cancelada.");
-                return null; // Retorna null se o usuário cancelar a operação
-            }
-        }
+    // Painel para o campo de texto com FlowLayout centralizado
+    JPanel painelNovo = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    painelNovo.setBackground(painel.getBackground());
+
+    JLabel labelNovo = new JLabel("Digite um novo gênero:");
+    labelNovo.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+
+    JTextField campoNovo = new JTextField();
+    campoNovo.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+    campoNovo.setPreferredSize(new Dimension(350, 35));
+    campoNovo.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createLineBorder(new Color(150, 150, 150), 2, true),
+        BorderFactory.createEmptyBorder(6, 10, 6, 10)
+    ));
+
+    JPanel painelCampoVertical = new JPanel();
+    painelCampoVertical.setLayout(new BoxLayout(painelCampoVertical, BoxLayout.Y_AXIS));
+    painelCampoVertical.setBackground(painel.getBackground());
+    labelNovo.setAlignmentX(Component.CENTER_ALIGNMENT);
+    campoNovo.setAlignmentX(Component.CENTER_ALIGNMENT);
+    painelCampoVertical.add(labelNovo);
+    painelCampoVertical.add(Box.createRigidArea(new Dimension(0, 8)));
+    painelCampoVertical.add(campoNovo);
+
+    painelNovo.add(painelCampoVertical);
+
+    // Lista dos gêneros existentes
+    JPanel painelLista = new JPanel(new BorderLayout(5, 5));
+    painelLista.setBackground(painel.getBackground());
+
+    JLabel labelLista = new JLabel("Ou escolha um gênero existente:");
+    labelLista.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+    DefaultListModel<String> listModel = new DefaultListModel<>();
+    for (Genero g : generos) {
+        listModel.addElement(g.nome);
     }
+    JList<String> listaGeneros = new JList<>(listModel);
+    listaGeneros.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-    /**
-     * Permite ao usuário escolher um gênero existente a partir da lista de gêneros cadastrados.
-     * 
-     * @param generos A lista de gêneros cadastrados.
-     * @return O objeto Genero escolhido pelo usuário, ou null se a operação for cancelada.
-     */
-    private static Genero escolherGenero(List<Genero> generos) {
-        // Verifica se há gêneros cadastrados
-        if (generos.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Não há gêneros cadastrados.");
-            return null; // Retorna null se não houver gêneros cadastrados
+    // **Ajustar a fonte e alinhamento do texto da lista**
+    listaGeneros.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+    listaGeneros.setCellRenderer(new DefaultListCellRenderer() {
+        @Override
+        public Component getListCellRendererComponent(JList<?> list, Object value,
+                                                      int index, boolean isSelected, boolean cellHasFocus) {
+            JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            label.setHorizontalAlignment(SwingConstants.CENTER); // Centraliza o texto
+            return label;
         }
-    
-        // Converte a lista de Gêneros em um array com os nomes dos gêneros
-        String[] opcoes = generos.stream()
-                                .map(g -> g.nome)
-                                .toArray(String[]::new);
-    
-        // Mostra as opções de escolha de gênero
-        String escolha = (String) JOptionPane.showInputDialog(null,
-                "Escolha um gênero:", // Mensagem exibida no diálogo
-                "Escolha de Gênero", // Título da janela de diálogo
-                JOptionPane.QUESTION_MESSAGE, // Ícone de interrogação
-                null,
-                opcoes, // Opções obtidas como array de nomes dos gêneros
-                opcoes[0]); // Valor padrão, primeiro elemento do array
-    
-        // Percorre a lista de gêneros para encontrar o gênero escolhido pelo usuário
-        for (Genero genero : generos) {
-            if (genero.nome.equalsIgnoreCase(escolha)) { // Método equalsIgnoreCase permite ignorar maiúsculas/minúsculas
-                return genero; // Retorna o objeto Genero escolhido
+    });
+
+    JScrollPane scroll = new JScrollPane(listaGeneros);
+    scroll.setPreferredSize(new Dimension(380, 160));
+
+    painelLista.add(labelLista, BorderLayout.NORTH);
+    painelLista.add(scroll, BorderLayout.CENTER);
+
+    // Painel central com os dois painéis empilhados (campo e lista)
+    JPanel painelCentro = new JPanel();
+    painelCentro.setLayout(new BoxLayout(painelCentro, BoxLayout.Y_AXIS));
+    painelCentro.setBackground(painel.getBackground());
+    painelCentro.add(painelNovo);
+    painelCentro.add(Box.createRigidArea(new Dimension(0, 20)));
+    painelCentro.add(painelLista);
+
+    // Painel de botões centralizado
+    JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    painelBotoes.setBackground(painel.getBackground());
+
+    JButton btnConfirmar = criarBotao("Confirmar");
+    JButton btnCancelar = criarBotao("Cancelar");
+
+    painelBotoes.add(btnConfirmar);
+    painelBotoes.add(btnCancelar);
+
+    painel.add(painelCentro, BorderLayout.CENTER);
+    painel.add(painelBotoes, BorderLayout.SOUTH);
+
+    dialog.getContentPane().add(painel);
+    dialog.pack();
+    dialog.setMinimumSize(dialog.getSize());
+
+    final String[] resultado = {null};
+
+    btnConfirmar.addActionListener(e -> {
+        String novoGenero = campoNovo.getText().trim();
+
+        if (!novoGenero.isEmpty()) {
+            int id = cadastrar(novoGenero);
+            if (id != -1) {
+                resultado[0] = String.valueOf(id);
+                dialog.dispose();
+            } else {
+                JOptionPane.showMessageDialog(dialog, "Erro ao cadastrar novo gênero.");
+            }
+            return;
+        }
+
+        String selecionado = listaGeneros.getSelectedValue();
+        if (selecionado != null) {
+            for (Genero g : generos) {
+                if (g.nome.equalsIgnoreCase(selecionado)) {
+                    resultado[0] = String.valueOf(g.id);
+                    dialog.dispose();
+                    return;
+                }
             }
         }
-    
-        return null; // Retorna null se o usuário cancelar a escolha
-    }
 
+        JOptionPane.showMessageDialog(dialog, "Por favor, digite um novo gênero ou selecione um existente.");
+    });
+
+    btnCancelar.addActionListener(e -> {
+        resultado[0] = null;
+        dialog.dispose();
+    });
+
+    dialog.setVisible(true);
+    return resultado[0];
+}
+
+
+// Método auxiliar para criar botões iguais aos do menu inicial
+private static JButton criarBotao(String texto) {
+    JButton btn = new JButton(texto);
+    btn.setFocusPainted(false);
+    btn.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 14));
+    btn.setBackground(new Color(220, 220, 220));
+    btn.setForeground(Color.DARK_GRAY);
+    btn.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createLineBorder(new Color(180, 180, 180)),
+        BorderFactory.createEmptyBorder(10, 15, 10, 15)
+    ));
+    return btn;
+    }
 }

@@ -207,23 +207,50 @@ public class Main {
      * Exibe um menu de cadastro para o usuário escolher entre cadastrar show, gênero, local ou voltar.
      */
     public static void menuCadastro() {
-        String[] opcoes = {"Cadastrar Show", "Cadastrar Gênero", "Cadastrar Local", "Voltar"};
-        int escolha = JOptionPane.showOptionDialog(frame,
-                "Escolha uma opção de cadastro:",
-                "Cadastro",
-                JOptionPane.DEFAULT_OPTION,
-                JOptionPane.PLAIN_MESSAGE,
-                null,
-                opcoes,
-                opcoes[0]);
+    // Cria um diálogo modal com o JFrame como dono
+    JDialog dialog = new JDialog(frame, "Cadastro", true);
+    dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
-        switch (escolha) {
-            case 0 -> Show.cadastrarShow();
-            case 1 -> cadastrarGenero();
-            case 2 -> cadastrarLocal();
-            default -> {} // Voltar
-        }
-    }
+    JPanel painel = new JPanel(new GridLayout(4, 1, 0, 10));
+    painel.setBackground(new Color(245, 245, 245));
+    painel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+    JButton btnCadastrarShow = criarBotao("Cadastrar Show");
+    JButton btnCadastrarGenero = criarBotao("Cadastrar Gênero");
+    JButton btnCadastrarLocal = criarBotao("Cadastrar Local");
+    JButton btnVoltar = criarBotao("Voltar");
+
+    painel.add(btnCadastrarShow);
+    painel.add(btnCadastrarGenero);
+    painel.add(btnCadastrarLocal);
+    painel.add(btnVoltar);
+
+    dialog.getContentPane().add(painel);
+    dialog.pack();
+    dialog.setLocationRelativeTo(frame);
+
+    // Ações dos botões
+    btnCadastrarShow.addActionListener(e -> {
+        dialog.dispose(); // fecha o diálogo antes
+        Show.cadastrarShow();
+    });
+
+    btnCadastrarGenero.addActionListener(e -> {
+        dialog.dispose();
+        cadastrarGenero();
+    });
+
+    btnCadastrarLocal.addActionListener(e -> {
+        dialog.dispose();
+        cadastrarLocal();
+    });
+
+    btnVoltar.addActionListener(e -> dialog.dispose());
+
+    dialog.setVisible(true);
+}
+
+
 
     /**
      * Solicita o cadastro de um novo gênero de música.
