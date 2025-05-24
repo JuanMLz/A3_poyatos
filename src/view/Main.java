@@ -42,7 +42,7 @@ public class Main {
         painel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // Título e subtítulo
-       ImageIcon originalIcon = new ImageIcon("C:\\Users\\kenje\\Desktop\\Nova pasta (2)\\A3_poyatos\\src\\imagens\\iconeshowzao.png");
+       ImageIcon originalIcon = new ImageIcon("src\\imagens\\iconeshowzao.png");
 Image imagemRedimensionada = originalIcon.getImage().getScaledInstance(250, 100, Image.SCALE_SMOOTH); // ajuste o tamanho aqui
 ImageIcon iconRedimensionado = new ImageIcon(imagemRedimensionada);
 
