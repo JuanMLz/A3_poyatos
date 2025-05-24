@@ -8,7 +8,8 @@ import java.sql.SQLException; // Faz o tratamento das exceções relacionadas ao
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JOptionPane;
+import javax.swing.*;
+import java.awt.*;
 
 import dao.Conexao; // Importa a classe que faz a conexão com o Banco de Dados
 
@@ -74,14 +75,61 @@ public class Show {
      * inseri-los no banco de dados.
      */
     public static void cadastrarShow() {
-        String nome = JOptionPane.showInputDialog("Digite o nome do show:");
-        String data = JOptionPane.showInputDialog("Digite a data do show (DD/MM):");
+    // Cria painel com layout vertical para os campos
+    JPanel painel = new JPanel();
+    painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
+    painel.setBackground(new Color(245, 245, 245));
+    painel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+    // Label e campo para nome do show
+    JLabel labelNome = new JLabel("Nome do show:");
+    labelNome.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+    JTextField campoNome = new JTextField();
+    campoNome.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+    campoNome.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
+    campoNome.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+    // Espaço entre os campos
+    painel.add(labelNome);
+    painel.add(Box.createRigidArea(new Dimension(0, 5)));
+    painel.add(campoNome);
+    painel.add(Box.createRigidArea(new Dimension(0, 15)));
+
+    // Label e campo para data do show
+    JLabel labelData = new JLabel("Data do show (DD/MM):");
+    labelData.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+    JTextField campoData = new JTextField();
+    campoData.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+    campoData.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
+    campoData.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+    painel.add(labelData);
+    painel.add(Box.createRigidArea(new Dimension(0, 5)));
+    painel.add(campoData);
+
+    // Exibe painel com OK/CANCEL
+    int resultado = JOptionPane.showConfirmDialog(
+        null,
+        painel,
+        "Cadastro de Show",
+        JOptionPane.OK_CANCEL_OPTION,
+        JOptionPane.PLAIN_MESSAGE
+    );
+
+    if (resultado == JOptionPane.OK_OPTION) {
+        String nome = campoNome.getText().trim();
+        String data = campoData.getText().trim();
+
+        if (nome.isEmpty() || data.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Por favor, preencha nome e data do show.");
+            return;
+        }
 
         // Obtém o código do gênero
         String codGeneroStr = Genero.verificarOuCadastrar();
         if (codGeneroStr == null) {
             JOptionPane.showMessageDialog(null, "Operação cancelada.");
-            return; // Retorna se o usuário cancelar a operação
+            return;
         }
         int codGenero = Integer.parseInt(codGeneroStr);
 
@@ -89,18 +137,21 @@ public class Show {
         String codLocalStr = Local.verificarOuCadastrar();
         if (codLocalStr == null) {
             JOptionPane.showMessageDialog(null, "Operação cancelada.");
-            return; // Retorna se o usuário cancelar a operação
+            return;
         }
         int codLocal = Integer.parseInt(codLocalStr);
 
+        // Link do show
         String link = JOptionPane.showInputDialog("Digite o link do show:");
 
-        // Cria um novo objeto Show com os dados fornecidos
+        // Cria objeto Show
         Show show = new Show(0, nome, data, codGenero, codLocal, link);
 
-        // Chama o método estático para cadastrar o show no banco de dados
+        // Cadastra no banco
         cadastrar(show);
     }
+}
+
 
     /**
      * Método estático para inserir um show no banco de dados.
