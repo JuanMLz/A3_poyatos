@@ -111,7 +111,7 @@ titulo.setHorizontalAlignment(SwingConstants.CENTER);
         return btn;
     }
 
-        /**
+    /**
      * Exibe todos os shows cadastrados no sistema.
      * Se não houver shows cadastrados, uma mensagem de alerta é exibida.
      */
@@ -140,6 +140,7 @@ titulo.setHorizontalAlignment(SwingConstants.CENTER);
         cardShow.setBackground(Color.WHITE);
         cardShow.setAlignmentX(Component.LEFT_ALIGNMENT);
         cardShow.setMaximumSize(new Dimension(360, Integer.MAX_VALUE));  
+
         String nomeGenero = generos.stream()
                                    .filter(g -> g.id == show.codGenero)
                                    .map(g -> g.nome)
@@ -168,7 +169,7 @@ titulo.setHorizontalAlignment(SwingConstants.CENTER);
         lblGenero.setFont(new Font("Segoe UI Emoji", Font.ITALIC, 13));
         lblGenero.setForeground(new Color(120, 120, 120));
 
-        JLabel lblLink = new JLabel("<html><a href=\'" + show.link + "\'>Link do show</a></html>");
+        JLabel lblLink = new JLabel("<html><a href=\"" + show.link + "\">Link do show</a></html>");
         lblLink.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 13));
         lblLink.setForeground(new Color(10, 102, 194));
         lblLink.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -198,7 +199,27 @@ titulo.setHorizontalAlignment(SwingConstants.CENTER);
     scrollPane.setPreferredSize(new Dimension(380, 300));
     scrollPane.getVerticalScrollBar().setUnitIncrement(12);
 
-    JOptionPane.showMessageDialog(frame, scrollPane, "Shows Cadastrados", JOptionPane.INFORMATION_MESSAGE);
+    // Cria o botão OK estilizado
+    JButton okButton = criarBotao("OK");
+
+    // Cria o JOptionPane com conteúdo e botão personalizado
+    JOptionPane optionPane = new JOptionPane(
+        scrollPane,
+        JOptionPane.PLAIN_MESSAGE,
+        JOptionPane.DEFAULT_OPTION,
+        null,
+        new Object[]{okButton},
+        okButton
+    );
+
+    // Cria o diálogo a partir do JOptionPane
+    JDialog dialog = optionPane.createDialog(frame, "Shows Cadastrados");
+
+    // Fecha o diálogo quando o botão OK for clicado
+    okButton.addActionListener(e -> dialog.dispose());
+
+    // Exibe o diálogo modal
+    dialog.setVisible(true);
 }
 
     /**
