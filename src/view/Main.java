@@ -31,7 +31,7 @@ public class Main {
     public static void criarInterface() {
         frame = new JFrame("🎵 Showzão - Todos seus shows em um só lugar!");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(420, 370);
+        frame.setSize(600, 500);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
 
@@ -43,7 +43,7 @@ public class Main {
 
         // Título e subtítulo
        ImageIcon originalIcon = new ImageIcon("C:\\Users\\kenje\\Desktop\\Nova pasta (2)\\A3_poyatos\\src\\imagens\\iconeshowzao.png");
-Image imagemRedimensionada = originalIcon.getImage().getScaledInstance(120, 70, Image.SCALE_SMOOTH); // ajuste o tamanho aqui
+Image imagemRedimensionada = originalIcon.getImage().getScaledInstance(250, 100, Image.SCALE_SMOOTH); // ajuste o tamanho aqui
 ImageIcon iconRedimensionado = new ImageIcon(imagemRedimensionada);
 
 JLabel titulo = new JLabel(iconRedimensionado, SwingConstants.CENTER);
@@ -51,7 +51,7 @@ titulo.setHorizontalAlignment(SwingConstants.CENTER);
 
 
         JLabel subtitulo = new JLabel("Todos seus shows em um só lugar!", SwingConstants.CENTER);
-        subtitulo.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 14));
+        subtitulo.setFont(new Font("Segoe UI Emoji", Font.BOLD, 20));
         subtitulo.setForeground(new Color(80, 80, 80));
 
         // Painel topo com título e subtítulo
@@ -101,7 +101,7 @@ titulo.setHorizontalAlignment(SwingConstants.CENTER);
     private static JButton criarBotao(String texto) {
         JButton btn = new JButton(texto);
         btn.setFocusPainted(false);
-        btn.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 14));
+        btn.setFont(new Font("Segoe UI Emoji", Font.BOLD, 16));
         btn.setBackground(new Color(220, 220, 220));
         btn.setForeground(Color.DARK_GRAY);
         btn.setBorder(BorderFactory.createCompoundBorder(
