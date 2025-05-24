@@ -42,9 +42,13 @@ public class Main {
         painel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // Título e subtítulo
-        JLabel titulo = new JLabel("🎵 Showzão", SwingConstants.CENTER);
-        titulo.setFont(new Font("Segoe UI Emoji", Font.BOLD, 24));
-        titulo.setForeground(new Color(44, 62, 80));
+       ImageIcon originalIcon = new ImageIcon("C:\\Users\\kenje\\Desktop\\Nova pasta (2)\\A3_poyatos\\src\\imagens\\iconeshowzao.png");
+Image imagemRedimensionada = originalIcon.getImage().getScaledInstance(120, 70, Image.SCALE_SMOOTH); // ajuste o tamanho aqui
+ImageIcon iconRedimensionado = new ImageIcon(imagemRedimensionada);
+
+JLabel titulo = new JLabel(iconRedimensionado, SwingConstants.CENTER);
+titulo.setHorizontalAlignment(SwingConstants.CENTER);
+
 
         JLabel subtitulo = new JLabel("Todos seus shows em um só lugar!", SwingConstants.CENTER);
         subtitulo.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 14));
