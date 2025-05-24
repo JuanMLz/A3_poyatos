@@ -108,34 +108,6 @@ public class Main {
     }
 
     /**
-     * Exibe uma janela de entrada de texto personalizada para o usuário.
-     * 
-     * @param titulo O título da janela de entrada
-     * @param mensagem A mensagem a ser exibida na janela
-     * @return O texto inserido pelo usuário, ou null se cancelado
-     */
-    private static String inputDialogModern(String titulo, String mensagem) {
-        JTextField textField = new JTextField(20);
-        JPanel panel = new JPanel(new BorderLayout(5, 5));
-        panel.setBackground(new Color(245, 245, 245));
-        panel.add(new JLabel(mensagem), BorderLayout.NORTH);
-        panel.add(textField, BorderLayout.CENTER);
-
-        int resultado = JOptionPane.showConfirmDialog(
-            frame,
-            panel,
-            titulo,
-            JOptionPane.OK_CANCEL_OPTION,
-            JOptionPane.PLAIN_MESSAGE
-        );
-
-        if (resultado == JOptionPane.OK_OPTION) {
-            return textField.getText().trim();
-        }
-        return null;
-    }
-
-    /**
      * Exibe todos os shows cadastrados no sistema.
      * Se não houver shows cadastrados, uma mensagem de alerta é exibida.
      */
