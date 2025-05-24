@@ -63,7 +63,7 @@ public class Main {
 
         // Botões de ação
         JButton btnMostrar = criarBotao("📋 Mostrar Shows");
-        JButton btnPesquisar = criarBotao("🔎 Pesquisar por Gênero");
+        JButton btnPesquisar = criarBotao("🔎 Pesquisar Shows por Gênero");
         JButton btnCadastrar = criarBotao("📝 Cadastrar");
         JButton btnSair = criarBotao("🚪 Sair");
 
