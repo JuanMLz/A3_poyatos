@@ -103,7 +103,7 @@ public class Genero {
 
     JTextField campoNovo = new JTextField();
     campoNovo.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-    campoNovo.setPreferredSize(new Dimension(350, 35));
+    campoNovo.setPreferredSize(new Dimension(350, 45));
     campoNovo.setBorder(BorderFactory.createCompoundBorder(
         BorderFactory.createLineBorder(new Color(150, 150, 150), 2, true),
         BorderFactory.createEmptyBorder(6, 10, 6, 10)
