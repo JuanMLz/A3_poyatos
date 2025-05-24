@@ -107,7 +107,7 @@ public class Main {
         return btn;
     }
 
-        /**
+    /**
      * Exibe todos os shows cadastrados no sistema.
      * Se não houver shows cadastrados, uma mensagem de alerta é exibida.
      */
@@ -164,7 +164,7 @@ public class Main {
         lblGenero.setFont(new Font("Segoe UI Emoji", Font.ITALIC, 13));
         lblGenero.setForeground(new Color(120, 120, 120));
 
-        JLabel lblLink = new JLabel("<html><a href=\'" + show.link + "\">Link do show</a></html>");
+        JLabel lblLink = new JLabel("<html><a href=\'" + show.link + "\'>Link do show</a></html>");
         lblLink.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 13));
         lblLink.setForeground(new Color(10, 102, 194));
         lblLink.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -231,6 +231,9 @@ public class Main {
     dialog.setLocationRelativeTo(frame);
     dialog.setVisible(true);
 }
+
+
+
 
     /**
      * Permite ao usuário pesquisar shows por gênero.
