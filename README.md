@@ -69,7 +69,7 @@ Durante a refatoração, diversas melhorias foram implementadas para otimizar o 
 - Correção de erros de sintaxe em alguns scripts do código `Main` da interface gráfica, garantindo que a aplicação funcione corretamente sem travamentos ou erros inesperados.  
 - Organização do projeto em pastas específicas, com a criação da pasta `bin` para armazenar os executáveis do programa, promovendo uma melhor estrutura de diretórios e facilitando a execução.  
 - Implementação da pasta `lib`, contendo scripts responsáveis pela conexão com o banco de dados, o que modulariza e isola a lógica de persistência de dados do restante da aplicação.  
-- Criação e configuração do banco de dados MariaDB, estabelecendo a conexão com o banco para realizar operações de armazenamento e consulta dos dados referentes aos shows, gêneros musicais e locais.  
+- Criação e configuração do banco de dados mysql pelo console do aws, estabelecendo a conexão com o banco para realizar operações de armazenamento e consulta dos dados referentes aos shows, gêneros musicais e locais.  
 - Melhoria na modularização e legibilidade do código, com a utilização de funções e classes bem definidas, tornando o código mais fácil de entender e manter.  
 - Aprimoramento da interface do usuário, com menus interativos e visualmente mais organizados para facilitar a navegação e usabilidade do sistema.
 - Implementação de comentarios em todo o codigo.
