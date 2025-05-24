@@ -164,7 +164,7 @@ public class Main {
         lblGenero.setFont(new Font("Segoe UI Emoji", Font.ITALIC, 13));
         lblGenero.setForeground(new Color(120, 120, 120));
 
-        JLabel lblLink = new JLabel("<html><a href='" + show.link + "'>Link do show</a></html>");
+        JLabel lblLink = new JLabel("<html><a href=\'" + show.link + "\'>Link do show</a></html>");
         lblLink.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 13));
         lblLink.setForeground(new Color(10, 102, 194));
         lblLink.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -191,11 +191,49 @@ public class Main {
     }
 
     JScrollPane scrollPane = new JScrollPane(painelShows);
-    scrollPane.setPreferredSize(new Dimension(380, 300));
     scrollPane.getVerticalScrollBar().setUnitIncrement(12);
 
-    JOptionPane.showMessageDialog(frame, scrollPane, "Shows Cadastrados", JOptionPane.INFORMATION_MESSAGE);
+    JLabel tituloShowzao = new JLabel("🎵 Showzão", SwingConstants.CENTER);
+    tituloShowzao.setFont(new Font("Segoe UI Emoji", Font.BOLD, 24));
+    tituloShowzao.setForeground(new Color(44, 62, 80));
+
+    JPanel painelTopoShowzao = new JPanel(new GridLayout(1, 1));
+    painelTopoShowzao.setBackground(new Color(245, 245, 245));
+    painelTopoShowzao.add(tituloShowzao);
+    painelTopoShowzao.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+
+    JPanel painelDialogo = new JPanel(new BorderLayout(0, 10));
+    painelDialogo.setBackground(new Color(245, 245, 245));
+    painelDialogo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    painelDialogo.add(painelTopoShowzao, BorderLayout.NORTH);
+    painelDialogo.add(scrollPane, BorderLayout.CENTER);
+
+    scrollPane.setPreferredSize(new Dimension(380, 250));
+
+    JButton btnOk = criarBotao("OK");
+    Object[] options = {btnOk};
+
+    final JOptionPane optionPane = new JOptionPane(
+            painelDialogo,
+            JOptionPane.PLAIN_MESSAGE,
+            JOptionPane.DEFAULT_OPTION,
+            null,
+            options,
+            options[0]);
+
+    final JDialog dialog = new JDialog(frame, "Todos os shows", true);
+    dialog.setContentPane(optionPane);
+    dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+    btnOk.addActionListener(e -> dialog.dispose());
+
+    dialog.pack();
+    dialog.setLocationRelativeTo(frame);
+    dialog.setVisible(true);
 }
+
+
+
 
     /**
      * Permite ao usuário pesquisar shows por gênero.
