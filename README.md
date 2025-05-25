@@ -27,7 +27,7 @@ O código enviado como base para o trabalho gerencia shows, gêneros musicais e 
 - Menu Principal: Exibe as opções para o usuário.
 
 <details>
-  <summary>Imagem do Menu Principal</summary>
+  **<summary>Imagem do Menu Principal</summary>**
   <img src="https://snipboard.io/6OgXui.jpg" alt="Imagem do Menu Principal" width="400px">
 </details>
 
