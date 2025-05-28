@@ -26,7 +26,25 @@ public class Show {
     // Construtor vazio
     public Show() {
     }
+    
+public static void removerShow(Show show) {
+    String sql = "DELETE FROM shows WHERE id = ?";
+    try (Connection conn = Conexao.getConexao();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
 
+        ps.setInt(1, show.id);
+        int linhasAfetadas = ps.executeUpdate();
+
+        if (linhasAfetadas > 0) {
+            JOptionPane.showMessageDialog(null, "Show removido com sucesso!");
+        } else {
+            JOptionPane.showMessageDialog(null, "Show não encontrado ou já foi removido.");
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Erro ao remover show: " + e.getMessage());
+    }
+}
+    
     // Construtor com todos os argumentos
     public Show(int id, String nome, String data, int codGenero, int codLocal, String link) {
         this.id = id;

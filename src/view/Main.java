@@ -5,6 +5,8 @@ import model.Local;
 import model.Show;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+
 import java.awt.*;
 import java.util.List;
 
@@ -115,7 +117,7 @@ titulo.setHorizontalAlignment(SwingConstants.CENTER);
      * Exibe todos os shows cadastrados no sistema.
      * Se não houver shows cadastrados, uma mensagem de alerta é exibida.
      */
-    public static void mostrarTodosOsShows() {
+public static void mostrarTodosOsShows() {
     List<Show> shows = Show.getShows();
     List<Genero> generos = Genero.getGeneros();
     List<Local> locais = Local.getLocais();
@@ -130,6 +132,9 @@ titulo.setHorizontalAlignment(SwingConstants.CENTER);
     painelShows.setBackground(new Color(245, 245, 245));
     painelShows.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
+    // Criamos um array para armazenar o dialog fora do loop
+    final JDialog[] dialog = new JDialog[1];
+
     for (Show show : shows) {
         JPanel cardShow = new JPanel();
         cardShow.setLayout(new BoxLayout(cardShow, BoxLayout.Y_AXIS));
@@ -139,19 +144,19 @@ titulo.setHorizontalAlignment(SwingConstants.CENTER);
         ));
         cardShow.setBackground(Color.WHITE);
         cardShow.setAlignmentX(Component.LEFT_ALIGNMENT);
-        cardShow.setMaximumSize(new Dimension(360, Integer.MAX_VALUE));  
+        cardShow.setMaximumSize(new Dimension(360, Integer.MAX_VALUE));
 
         String nomeGenero = generos.stream()
-                                   .filter(g -> g.id == show.codGenero)
-                                   .map(g -> g.nome)
-                                   .findFirst()
-                                   .orElse("Desconhecido");
+                .filter(g -> g.id == show.codGenero)
+                .map(g -> g.nome)
+                .findFirst()
+                .orElse("Desconhecido");
 
         String nomeLocal = locais.stream()
-                                .filter(l -> l.id == show.codLocal)
-                                .map(l -> l.nome)
-                                .findFirst()
-                                .orElse("Desconhecido");
+                .filter(l -> l.id == show.codLocal)
+                .map(l -> l.nome)
+                .findFirst()
+                .orElse("Desconhecido");
 
         JLabel lblNome = new JLabel(show.nome);
         lblNome.setFont(new Font("Segoe UI Emoji", Font.BOLD, 16));
@@ -165,7 +170,7 @@ titulo.setHorizontalAlignment(SwingConstants.CENTER);
         lblData.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 14));
         lblData.setForeground(new Color(80, 80, 80));
 
-        JLabel lblGenero = new JLabel("<html>Gênero: " + nomeGenero + "</html>");  
+        JLabel lblGenero = new JLabel("<html>Gênero: " + nomeGenero + "</html>");
         lblGenero.setFont(new Font("Segoe UI Emoji", Font.ITALIC, 13));
         lblGenero.setForeground(new Color(120, 120, 120));
 
@@ -183,6 +188,24 @@ titulo.setHorizontalAlignment(SwingConstants.CENTER);
             }
         });
 
+        JButton btnExcluir = criarBotao("Excluir");
+        btnExcluir.setBackground(new Color(255, 102, 102));
+        btnExcluir.setForeground(Color.WHITE);
+        btnExcluir.setBorder(new LineBorder(new Color(200, 0, 0), 1, true));
+        btnExcluir.addActionListener(e -> {
+            int confirmacao = JOptionPane.showConfirmDialog(
+                frame,
+                "Tem certeza que deseja excluir o show \"" + show.nome + "\"?",
+                "Confirmar Exclusão",
+                JOptionPane.YES_NO_OPTION
+            );
+            if (confirmacao == JOptionPane.YES_OPTION) {
+                Show.removerShow(show);
+                dialog[0].dispose(); // Fecha o diálogo atual
+                mostrarTodosOsShows(); // Reabre com lista atualizada
+            }
+        });
+
         cardShow.add(lblNome);
         cardShow.add(Box.createVerticalStrut(5));
         cardShow.add(lblLocal);
@@ -190,6 +213,8 @@ titulo.setHorizontalAlignment(SwingConstants.CENTER);
         cardShow.add(lblGenero);
         cardShow.add(Box.createVerticalStrut(5));
         cardShow.add(lblLink);
+        cardShow.add(Box.createVerticalStrut(10));
+        cardShow.add(btnExcluir);
 
         painelShows.add(cardShow);
         painelShows.add(Box.createVerticalStrut(15));
@@ -199,10 +224,8 @@ titulo.setHorizontalAlignment(SwingConstants.CENTER);
     scrollPane.setPreferredSize(new Dimension(380, 300));
     scrollPane.getVerticalScrollBar().setUnitIncrement(12);
 
-    // Cria o botão OK estilizado
     JButton okButton = criarBotao("OK");
 
-    // Cria o JOptionPane com conteúdo e botão personalizado
     JOptionPane optionPane = new JOptionPane(
         scrollPane,
         JOptionPane.PLAIN_MESSAGE,
@@ -212,15 +235,13 @@ titulo.setHorizontalAlignment(SwingConstants.CENTER);
         okButton
     );
 
-    // Cria o diálogo a partir do JOptionPane
-    JDialog dialog = optionPane.createDialog(frame, "Shows Cadastrados");
+    dialog[0] = optionPane.createDialog(frame, "Shows Cadastrados");
 
-    // Fecha o diálogo quando o botão OK for clicado
-    okButton.addActionListener(e -> dialog.dispose());
+    okButton.addActionListener(e -> dialog[0].dispose());
 
-    // Exibe o diálogo modal
-    dialog.setVisible(true);
+    dialog[0].setVisible(true);
 }
+
 
     /**
      * Permite ao usuário pesquisar shows por gênero.
