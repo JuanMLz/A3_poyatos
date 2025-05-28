@@ -2,7 +2,7 @@
 
 ## Professores
 - Henrique Poyatos  
-- Magda
+- Magda Miyashiro
 
 ## Alunos
 - Luís Felipe Moura Borges RA: 824154663  
