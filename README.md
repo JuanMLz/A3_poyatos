@@ -84,7 +84,7 @@ A refatoração deste código visa melhorar os seguintes aspectos:
   <img src="https://snipboard.io/y1Gk2D.jpg" alt="Imagem do Novo Menu de Cadastro" width="400px">
 </details>
 
-Durante a refatoração, diversas melhorias foram implementadas para otimizar o código e aprimorar a experiência do usuário. As principais melhorias incluem:
+**Durante a refatoração, diversas melhorias foram implementadas para otimizar o código e aprimorar a experiência do usuário. As principais melhorias incluem:**
 
 - Criação de uma branch separada para manter o código antigo isolado do código novo, facilitando o controle de versões e testes sem impactar a base original.  
 - Correção de erros de sintaxe em alguns scripts do código `Main` da interface gráfica, garantindo que a aplicação funcione corretamente sem travamentos ou erros inesperados.  
