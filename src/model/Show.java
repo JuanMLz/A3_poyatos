@@ -5,11 +5,11 @@ import java.sql.Connection; // Faz a conexão com o Banco de Dados
 import java.sql.PreparedStatement; // Executa consultas SQL 
 import java.sql.ResultSet; // Armazena os resultados das consultas SQL
 import java.sql.SQLException; // Faz o tratamento das exceções relacionadas ao Banco de Dados
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayList; // Estrutura de dados lista dinamica
+import java.util.List; // Interface para listas
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.*; // Biblioteca para GUI (interfaces graficas)
+import java.awt.*; // Bibliocateca para elementos graficos (cores, fontes, fontes, dimensoes)
 
 import dao.Conexao; // Importa a classe que faz a conexão com o Banco de Dados
 
@@ -26,14 +26,14 @@ public class Show {
     // Construtor vazio
     public Show() {
     }
-    
+// Metodo estatico para remover um show de banco usando o id do show   
 public static void removerShow(Show show) {
     String sql = "DELETE FROM shows WHERE id = ?";
     try (Connection conn = Conexao.getConexao();
          PreparedStatement ps = conn.prepareStatement(sql)) {
 
-        ps.setInt(1, show.id);
-        int linhasAfetadas = ps.executeUpdate();
+        ps.setInt(1, show.id); // Define o parametro id para a query
+        int linhasAfetadas = ps.executeUpdate(); // Executa o comando DELETE
 
         if (linhasAfetadas > 0) {
             JOptionPane.showMessageDialog(null, "Show removido com sucesso!");
@@ -133,21 +133,21 @@ public static void removerShow(Show show) {
         JOptionPane.OK_CANCEL_OPTION,
         JOptionPane.PLAIN_MESSAGE
     );
-
+   // Se o usuario clicar em OK, coleta os dados inseridos
     if (resultado == JOptionPane.OK_OPTION) {
         String nome = campoNome.getText().trim();
         String data = campoData.getText().trim();
-
+   // Valida se os campos nome e data nao estao vazios
         if (nome.isEmpty() || data.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Por favor, preencha nome e data do show.");
-            return;
+            return; // Sai do metodo se dados estiverem incompletos
         }
 
         // Obtém o código do gênero
         String codGeneroStr = Genero.verificarOuCadastrar();
         if (codGeneroStr == null) {
             JOptionPane.showMessageDialog(null, "Operação cancelada.");
-            return;
+            return; // Sai se o usuario cancelar a operacao 
         }
         int codGenero = Integer.parseInt(codGeneroStr);
 
@@ -165,7 +165,7 @@ public static void removerShow(Show show) {
         // Cria objeto Show
         Show show = new Show(0, nome, data, codGenero, codLocal, link);
 
-        // Cadastra no banco
+        // Cadastra no banco de dados
         cadastrar(show);
     }
 }
