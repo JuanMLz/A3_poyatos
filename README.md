@@ -63,6 +63,27 @@ A refatoração deste código visa melhorar os seguintes aspectos:
 
 ## Melhorias Implementadas
 
+- Novo Menu Principal: Exibe as opções para o usuário.
+
+<details>
+  <summary>Imagem do Novo Menu Principal</summary>
+  <img src="https://snipboard.io/OtWgQh.jpg" alt="Imagem do Novo Menu Principal" width="400px">
+</details>
+
+- Novo Mostrar Shows: Exibe todos os shows cadastrados.
+
+<details>
+  <summary>Imagem do Novo Mostrar Shows</summary>
+  <img src="https://snipboard.io/In1ldA.jpg" alt="Imagem do Novo Mostrar Shows" width="400px">
+</details>
+
+- Menu de Cadastro: Exibe o menu de cadastro de shows, gêneros e locais.
+
+<details>
+  <summary>Imagem do Novo Menu de Cadastro</summary>
+  <img src="https://snipboard.io/y1Gk2D.jpg" alt="Imagem do Novo Menu de Cadastro" width="400px">
+</details>
+
 Durante a refatoração, diversas melhorias foram implementadas para otimizar o código e aprimorar a experiência do usuário. As principais melhorias incluem:
 
 - Criação de uma branch separada para manter o código antigo isolado do código novo, facilitando o controle de versões e testes sem impactar a base original.  
