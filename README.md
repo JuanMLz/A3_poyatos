@@ -96,4 +96,3 @@ A refatoração deste código visa melhorar os seguintes aspectos:
 - Melhoria na modularização e legibilidade do código, com a utilização de funções e classes bem definidas, tornando o código mais fácil de entender e manter.
 - Aprimoramento da interface do usuário, com menus interativos e visualmente mais organizados para facilitar a navegação e usabilidade do sistema.
 - Implementação de comentarios em todo o codigo.
-  teste
