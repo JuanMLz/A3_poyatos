@@ -1,16 +1,18 @@
 # A3 DE GESTÃO E QUALIDADE DE SOFTWARE
 
 ## Professores
-- Henrique Poyatos  
+
+- Henrique Poyatos
 - Magda Miyashiro
 
 ## Alunos
-- Luís Felipe Moura Borges RA: 824154663  
-- Juan Moraes Lopes RA: 12523219000  
-- Gabriel Parra Boito RA: 824152876  
-- Cristiano Dario de Azevedo Filho RA: 823216267  
-- Lucas Henrique Rocha Lourenço RA: 323224861  
-- Vinícius Di Franco Heitor RA: 12524126336  
+
+- Luís Felipe Moura Borges RA: 824154663
+- Juan Moraes Lopes RA: 12523219000
+- Gabriel Parra Boito RA: 824152876
+- Cristiano Dario de Azevedo Filho RA: 823216267
+- Lucas Henrique Rocha Lourenço RA: 323224861
+- Vinícius Di Franco Heitor RA: 12524126336
 
 ---
 
@@ -53,10 +55,10 @@ O código original apresentava falhas em termos de organização, clareza e desi
 
 A refatoração deste código visa melhorar os seguintes aspectos:
 
-1. **Estrutura do Código:** Tornar o código mais organizado, modular e de fácil entendimento.  
-2. **Legibilidade:** Garantir que o código seja mais fácil de ler.  
-3. **Desempenho:** Melhorar a performance do código, eliminando redundâncias e otimizando partes que possam ser mais eficientes.  
-4. **Manutenibilidade:** Facilitar futuras manutenções e expansões do código, aplicando boas práticas como a utilização de métodos e classes bem definidas.  
+1. **Estrutura do Código:** Tornar o código mais organizado, modular e de fácil entendimento.
+2. **Legibilidade:** Garantir que o código seja mais fácil de ler.
+3. **Desempenho:** Melhorar a performance do código, eliminando redundâncias e otimizando partes que possam ser mais eficientes.
+4. **Manutenibilidade:** Facilitar futuras manutenções e expansões do código, aplicando boas práticas como a utilização de métodos e classes bem definidas.
 5. **Melhora do Visual:** Melhorar a interface do usuário, tornando-a mais visualmente agradável.
 
 ---
@@ -86,13 +88,12 @@ A refatoração deste código visa melhorar os seguintes aspectos:
 
 **Durante a refatoração, diversas melhorias foram implementadas para otimizar o código e aprimorar a experiência do usuário. As principais melhorias incluem:**
 
-- Criação de uma branch separada para manter o código antigo isolado do código novo, facilitando o controle de versões e testes sem impactar a base original.  
-- Correção de erros de sintaxe em alguns scripts do código `Main` da interface gráfica, garantindo que a aplicação funcione corretamente sem travamentos ou erros inesperados.  
-- Organização do projeto em pastas específicas, com a criação da pasta `bin` para armazenar os executáveis do programa, promovendo uma melhor estrutura de diretórios e facilitando a execução.  
-- Implementação da pasta `lib`, contendo scripts responsáveis pela conexão com o banco de dados, o que modulariza e isola a lógica de persistência de dados do restante da aplicação.  
-- Criação e configuração do banco de dados mysql pelo console do aws, estabelecendo a conexão com o banco para realizar operações de armazenamento e consulta dos dados referentes aos shows, gêneros musicais e locais.  
-- Melhoria na modularização e legibilidade do código, com a utilização de funções e classes bem definidas, tornando o código mais fácil de entender e manter.  
+- Criação de uma branch separada para manter o código antigo isolado do código novo, facilitando o controle de versões e testes sem impactar a base original.
+- Correção de erros de sintaxe em alguns scripts do código `Main` da interface gráfica, garantindo que a aplicação funcione corretamente sem travamentos ou erros inesperados.
+- Organização do projeto em pastas específicas, com a criação da pasta `bin` para armazenar os executáveis do programa, promovendo uma melhor estrutura de diretórios e facilitando a execução.
+- Implementação da pasta `lib`, contendo scripts responsáveis pela conexão com o banco de dados, o que modulariza e isola a lógica de persistência de dados do restante da aplicação.
+- Criação e configuração do banco de dados mysql pelo console do aws, estabelecendo a conexão com o banco para realizar operações de armazenamento e consulta dos dados referentes aos shows, gêneros musicais e locais.
+- Melhoria na modularização e legibilidade do código, com a utilização de funções e classes bem definidas, tornando o código mais fácil de entender e manter.
 - Aprimoramento da interface do usuário, com menus interativos e visualmente mais organizados para facilitar a navegação e usabilidade do sistema.
 - Implementação de comentarios em todo o codigo.
-
-
+  teste
