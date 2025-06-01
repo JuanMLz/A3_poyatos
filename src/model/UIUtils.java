@@ -9,22 +9,26 @@ public class UIUtils {
 
     /**
      * Cria um painel (card) visual para exibir informações de um show.
-     * O card exibe nome, local, data, gênero, link clicável e botão para excluir o show.
+     * O card exibe nome, local, data, gênero, link clicável e botão para excluir o
+     * show.
      * 
-     * @param show Show que será exibido no card.
-     * @param generos Lista de gêneros para identificar o nome do gênero do show.
-     * @param locais Lista de locais para identificar o nome do local do show.
-     * @param framePai JFrame pai para mensagens de erro e ações.
-     * @param atualizarCallback Callback para executar após exclusão, para atualizar a interface.
+     * @param show              Show que será exibido no card.
+     * @param generos           Lista de gêneros para identificar o nome do gênero
+     *                          do show.
+     * @param locais            Lista de locais para identificar o nome do local do
+     *                          show.
+     * @param framePai          JFrame pai para mensagens de erro e ações.
+     * @param atualizarCallback Callback para executar após exclusão, para atualizar
+     *                          a interface.
      * @return JPanel configurado como card do show.
      */
-    public static JPanel criarCardShow(Show show, List<Genero> generos, List<Local> locais, JFrame framePai, Runnable atualizarCallback) {
+    public static JPanel criarCardShow(Show show, List<Genero> generos, List<Local> locais, JFrame framePai,
+            Runnable atualizarCallback) {
         JPanel cardShow = new JPanel();
         cardShow.setLayout(new BoxLayout(cardShow, BoxLayout.Y_AXIS));
         cardShow.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(200, 200, 200), 1, true),
-            BorderFactory.createEmptyBorder(10, 10, 10, 10)
-        ));
+                BorderFactory.createLineBorder(new Color(200, 200, 200), 1, true),
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         cardShow.setBackground(Color.WHITE);
         cardShow.setAlignmentX(Component.LEFT_ALIGNMENT);
         cardShow.setMaximumSize(new Dimension(360, Integer.MAX_VALUE));
@@ -75,7 +79,8 @@ public class UIUtils {
             }
         });
 
-        // Botão vermelho para excluir o show, com confirmação e callback para atualizar a lista
+        // Botão vermelho para excluir o show, com confirmação e callback para atualizar
+        // a lista
         JButton btnExcluir = UIUtils.criarBotaoExcluir(show, framePai, atualizarCallback);
 
         // Adiciona todos os componentes ao painel card
@@ -105,9 +110,8 @@ public class UIUtils {
         btn.setBackground(new Color(220, 220, 220));
         btn.setForeground(Color.DARK_GRAY);
         btn.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(180, 180, 180)),
-            BorderFactory.createEmptyBorder(7, 15, 7, 15)
-        ));
+                BorderFactory.createLineBorder(new Color(180, 180, 180)),
+                BorderFactory.createEmptyBorder(7, 15, 7, 15)));
         return btn;
     }
 
@@ -115,8 +119,8 @@ public class UIUtils {
      * Cria um botão para excluir um show com estilo vermelho,
      * pede confirmação antes de excluir e executa callback após exclusão.
      * 
-     * @param show Show que será excluído.
-     * @param frame Janela pai para mostrar a confirmação.
+     * @param show             Show que será excluído.
+     * @param frame            Janela pai para mostrar a confirmação.
      * @param callbackExclusao Função a ser executada após exclusão bem sucedida.
      * @return JButton configurado para exclusão do show.
      */
@@ -127,11 +131,10 @@ public class UIUtils {
         btnExcluir.setBorder(new LineBorder(new Color(200, 0, 0), 1, true));
         btnExcluir.addActionListener(e -> {
             int confirmacao = JOptionPane.showConfirmDialog(
-                frame,
-                "Tem certeza que deseja excluir o show \"" + show.nome + "\"?",
-                "Confirmar Exclusão",
-                JOptionPane.YES_NO_OPTION
-            );
+                    frame,
+                    "Tem certeza que deseja excluir o show \"" + show.nome + "\"?",
+                    "Confirmar Exclusão",
+                    JOptionPane.YES_NO_OPTION);
             if (confirmacao == JOptionPane.YES_OPTION) {
                 Show.removerShow(show);
                 callbackExclusao.run();
@@ -140,7 +143,7 @@ public class UIUtils {
         return btnExcluir;
     }
 
-        /**
+    /**
      * Cria um JPanel com layout, cor de fundo e borda padrão.
      *
      * @param layout Layout a ser usado no JPanel.
@@ -158,7 +161,5 @@ public class UIUtils {
         btn.addActionListener(e -> acao.run());
         return btn;
     }
-
-
 
 }

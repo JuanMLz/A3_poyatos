@@ -15,15 +15,16 @@ import dao.Conexao;
 public class Show {
 
     // Atributos que armazenam as informações de um show
-    public int id;         // Identificador único no banco
-    public int codGenero;  // Código do gênero musical associado
-    public int codLocal;   // Código do local onde o show acontecerá
-    public String nome;    // Nome do show
-    public String data;    // Data do show no formato DD/MM
-    public String link;    // Link para venda de ingressos ou informações
+    public int id; // Identificador único no banco
+    public int codGenero; // Código do gênero musical associado
+    public int codLocal; // Código do local onde o show acontecerá
+    public String nome; // Nome do show
+    public String data; // Data do show no formato DD/MM
+    public String link; // Link para venda de ingressos ou informações
 
     // Construtor padrão (vazio)
-    public Show() {}
+    public Show() {
+    }
 
     // Construtor completo para facilitar criação de objetos com todos os dados
     public Show(int id, String nome, String data, int codGenero, int codLocal, String link) {
@@ -47,19 +48,18 @@ public class Show {
 
         // Tenta abrir conexão, preparar a consulta e executar
         try (Connection conn = Conexao.getConexao();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {
 
             // Para cada registro retornado, cria um objeto Show e adiciona na lista
             while (rs.next()) {
                 Show show = new Show(
-                    rs.getInt("id"),
-                    rs.getString("nome"),
-                    rs.getString("data"),
-                    rs.getInt("codGenero"),
-                    rs.getInt("codLocal"),
-                    rs.getString("link")
-                );
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getString("data"),
+                        rs.getInt("codGenero"),
+                        rs.getInt("codLocal"),
+                        rs.getString("link"));
                 lista.add(show);
             }
         } catch (SQLException e) {
@@ -107,12 +107,11 @@ public class Show {
 
         // Exibe janela com OK e Cancelar para o usuário preencher os dados
         int resultado = JOptionPane.showConfirmDialog(
-            null,
-            painel,
-            "Cadastro de Show",
-            JOptionPane.OK_CANCEL_OPTION,
-            JOptionPane.PLAIN_MESSAGE
-        );
+                null,
+                painel,
+                "Cadastro de Show",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE);
 
         // Se o usuário confirmar o cadastro, processa os dados
         if (resultado == JOptionPane.OK_OPTION) {
@@ -161,7 +160,7 @@ public class Show {
     public static void cadastrar(Show show) {
         String sql = "INSERT INTO shows (nome, data, codGenero, codLocal, link) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = Conexao.getConexao();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, show.nome);
             ps.setString(2, show.data);
             ps.setInt(3, show.codGenero);
@@ -184,7 +183,7 @@ public class Show {
     public static void removerShow(Show show) {
         String sql = "DELETE FROM shows WHERE id = ?";
         try (Connection conn = Conexao.getConexao();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, show.id);
             int linhasAfetadas = ps.executeUpdate();

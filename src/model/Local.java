@@ -17,7 +17,8 @@ public class Local {
     public int id;
     public String nome;
 
-    public Local() {}
+    public Local() {
+    }
 
     public Local(int id, String nome) {
         this.id = id;
@@ -32,7 +33,7 @@ public class Local {
         }
         String sql = "INSERT INTO local (nome) VALUES (?)";
         try (Connection conn = Conexao.getConexao();
-             PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, nome);
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
@@ -50,7 +51,7 @@ public class Local {
     private static boolean existeLocal(String nome) {
         String sql = "SELECT COUNT(*) FROM local WHERE LOWER(nome) = LOWER(?)";
         try (Connection conn = Conexao.getConexao();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, nome);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -67,8 +68,8 @@ public class Local {
         List<Local> lista = new ArrayList<>();
         String sql = "SELECT id, nome FROM local ORDER BY nome";
         try (Connection conn = Conexao.getConexao();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 Local local = new Local();
@@ -83,7 +84,8 @@ public class Local {
         return lista;
     }
 
-    // Dialogo para escolher local ou cadastrar novo, retorna ID selecionado ou cadastrado
+    // Dialogo para escolher local ou cadastrar novo, retorna ID selecionado ou
+    // cadastrado
     public static String escolherLocalComCadastro() {
         List<Local> locais = getLocais();
 
@@ -104,8 +106,9 @@ public class Local {
         listaLocais.setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value,
-                                                        int index, boolean isSelected, boolean cellHasFocus) {
-                JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                    int index, boolean isSelected, boolean cellHasFocus) {
+                JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected,
+                        cellHasFocus);
                 label.setHorizontalAlignment(SwingConstants.CENTER);
                 return label;
             }
@@ -115,7 +118,7 @@ public class Local {
         scroll.setPreferredSize(new Dimension(380, 200));
 
         // Declaração antecipada para uso nos lambdas
-        final String[] resultado = {null};
+        final String[] resultado = { null };
         final JDialog dialog = new JDialog((Frame) null, "Escolha um local", true);
 
         // Criação dos botões com o método criarBotaoComAcao
@@ -164,7 +167,6 @@ public class Local {
         dialog.setVisible(true);
         return resultado[0];
     }
-
 
     // Dialogo para cadastrar local, retorna ID cadastrado ou null
     public static Integer cadastrarLocalDialog(Window owner) {

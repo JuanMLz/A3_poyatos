@@ -17,7 +17,8 @@ public class Genero {
     public int id;
     public String nome;
 
-    public Genero() {}
+    public Genero() {
+    }
 
     public Genero(int id, String nome) {
         this.id = id;
@@ -33,7 +34,7 @@ public class Genero {
 
         String sql = "INSERT INTO genero (nome) VALUES (?)";
         try (Connection conn = Conexao.getConexao();
-             PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, nome);
             ps.executeUpdate();
 
@@ -51,7 +52,7 @@ public class Genero {
     private static boolean existeGenero(String nome) {
         String sql = "SELECT COUNT(*) FROM genero WHERE LOWER(nome) = LOWER(?)";
         try (Connection conn = Conexao.getConexao();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, nome);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -67,8 +68,8 @@ public class Genero {
         List<Genero> lista = new ArrayList<>();
         String sql = "SELECT id, nome FROM genero ORDER BY nome";
         try (Connection conn = Conexao.getConexao();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 Genero genero = new Genero();
@@ -102,8 +103,9 @@ public class Genero {
         listaGeneros.setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value,
-                                                        int index, boolean isSelected, boolean cellHasFocus) {
-                JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                    int index, boolean isSelected, boolean cellHasFocus) {
+                JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected,
+                        cellHasFocus);
                 label.setHorizontalAlignment(SwingConstants.CENTER);
                 return label;
             }
@@ -113,7 +115,7 @@ public class Genero {
         scroll.setPreferredSize(new Dimension(380, 200));
 
         // Declara essas variáveis antes para estarem disponíveis nas lambdas
-        final String[] resultado = {null};
+        final String[] resultado = { null };
         final JDialog dialog = new JDialog((Frame) null, "Escolha um gênero", true);
 
         // Agora crie os botões, usando as variáveis já declaradas
@@ -144,7 +146,7 @@ public class Genero {
                 Integer novoId = cadastrarGeneroDialog(null);
                 if (novoId != null) {
                     resultado[0] = String.valueOf(novoId);
-                    dialog.dispose();  // fecha diálogo retornando o novo ID
+                    dialog.dispose(); // fecha diálogo retornando o novo ID
                 }
             });
             painelBotoes.add(btnCadastrarNovo);
@@ -166,7 +168,6 @@ public class Genero {
         return resultado[0];
     }
 
-
     // Método público para escolher gênero só com seleção, sem cadastro
     public static String escolherGeneroSomente() {
         return escolherGeneroDialog(false);
@@ -177,7 +178,8 @@ public class Genero {
         return escolherGeneroDialog(true);
     }
 
-    // Método público para cadastrar novo gênero via input simples, retornando o ID do gênero cadastrado
+    // Método público para cadastrar novo gênero via input simples, retornando o ID
+    // do gênero cadastrado
     public static Integer cadastrarGeneroDialog(Frame framePai) {
         String nome = JOptionPane.showInputDialog(framePai, "Digite o nome do novo gênero:");
         if (nome == null || nome.trim().isEmpty()) {

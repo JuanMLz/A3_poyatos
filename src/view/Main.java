@@ -18,7 +18,8 @@ public class Main {
     private static JFrame frame; // Janela principal da aplicação
 
     /**
-     * Ponto de entrada da aplicação. Inicia a interface gráfica em thread apropriada.
+     * Ponto de entrada da aplicação. Inicia a interface gráfica em thread
+     * apropriada.
      */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(Main::criarInterface);
@@ -104,19 +105,17 @@ public class Main {
         JButton okButton = UIUtils.criarBotaoComAcao("OK", () -> dialog[0].dispose());
 
         JOptionPane optionPane = new JOptionPane(
-            scrollPane,
-            JOptionPane.PLAIN_MESSAGE,
-            JOptionPane.DEFAULT_OPTION,
-            null,
-            new Object[]{okButton},
-            okButton
-        );
+                scrollPane,
+                JOptionPane.PLAIN_MESSAGE,
+                JOptionPane.DEFAULT_OPTION,
+                null,
+                new Object[] { okButton },
+                okButton);
 
         dialog[0] = optionPane.createDialog(frame, "Shows Cadastrados");
 
         dialog[0].setVisible(true);
     }
-
 
     /**
      * Permite pesquisar shows por gênero selecionado pelo usuário.
@@ -134,8 +133,8 @@ public class Main {
         List<Local> locais = Local.getLocais();
 
         List<Show> showsFiltrados = shows.stream()
-                                        .filter(s -> s.codGenero == idGenero)
-                                        .toList();
+                .filter(s -> s.codGenero == idGenero)
+                .toList();
 
         if (showsFiltrados.isEmpty()) {
             JOptionPane.showMessageDialog(frame, "Não há shows cadastrados para este gênero.");
@@ -167,13 +166,12 @@ public class Main {
         JButton okButton = UIUtils.criarBotaoComAcao("OK", () -> dialog[0].dispose());
 
         JOptionPane optionPane = new JOptionPane(
-            scrollPane,
-            JOptionPane.PLAIN_MESSAGE,
-            JOptionPane.DEFAULT_OPTION,
-            null,
-            new Object[]{okButton},
-            okButton
-        );
+                scrollPane,
+                JOptionPane.PLAIN_MESSAGE,
+                JOptionPane.DEFAULT_OPTION,
+                null,
+                new Object[] { okButton },
+                okButton);
 
         dialog[0] = optionPane.createDialog(frame, "Shows por Gênero");
 
