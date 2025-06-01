@@ -139,4 +139,26 @@ public class UIUtils {
         });
         return btnExcluir;
     }
+
+        /**
+     * Cria um JPanel com layout, cor de fundo e borda padrão.
+     *
+     * @param layout Layout a ser usado no JPanel.
+     * @return JPanel configurado com layout, fundo claro e borda padrão.
+     */
+    public static JPanel criarPainelBase(LayoutManager layout) {
+        JPanel painel = new JPanel(layout);
+        painel.setBackground(new Color(245, 245, 245));
+        painel.setBorder(BorderFactory.createEmptyBorder(20, 20, 0, 20));
+        return painel;
+    }
+
+    public static JButton criarBotaoComAcao(String texto, Runnable acao) {
+        JButton btn = criarBotao(texto);
+        btn.addActionListener(e -> acao.run());
+        return btn;
+    }
+
+
+
 }

@@ -102,7 +102,7 @@ public class Genero {
         listaGeneros.setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value,
-                                                          int index, boolean isSelected, boolean cellHasFocus) {
+                                                        int index, boolean isSelected, boolean cellHasFocus) {
                 JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 label.setHorizontalAlignment(SwingConstants.CENTER);
                 return label;
@@ -112,39 +112,12 @@ public class Genero {
         JScrollPane scroll = new JScrollPane(listaGeneros);
         scroll.setPreferredSize(new Dimension(380, 200));
 
-        JButton btnConfirmar = UIUtils.criarBotao("Confirmar");
-        JButton btnCancelar = UIUtils.criarBotao("Cancelar");
-
-        JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER));
-
-        final String[] resultado = {null}; // variável para guardar o resultado
+        // Declara essas variáveis antes para estarem disponíveis nas lambdas
+        final String[] resultado = {null};
         final JDialog dialog = new JDialog((Frame) null, "Escolha um gênero", true);
 
-        if (permitirCadastro) {
-            JButton btnCadastrarNovo = UIUtils.criarBotao("Cadastrar Novo Gênero");
-            painelBotoes.add(btnCadastrarNovo);
-            btnCadastrarNovo.addActionListener(e -> {
-                Integer novoId = cadastrarGeneroDialog(null);
-                if (novoId != null) {
-                    resultado[0] = String.valueOf(novoId);
-                    dialog.dispose();  // fecha diálogo imediatamente retornando o novo ID
-                }
-            });
-        }
-
-        painelBotoes.add(btnConfirmar);
-        painelBotoes.add(btnCancelar);
-
-        JPanel painelPrincipal = new JPanel(new BorderLayout(10, 10));
-        painelPrincipal.add(scroll, BorderLayout.CENTER);
-        painelPrincipal.add(painelBotoes, BorderLayout.SOUTH);
-
-        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        dialog.getContentPane().add(painelPrincipal);
-        dialog.pack();
-        dialog.setLocationRelativeTo(null);
-
-        btnConfirmar.addActionListener(e -> {
+        // Agora crie os botões, usando as variáveis já declaradas
+        JButton btnConfirmar = UIUtils.criarBotaoComAcao("Confirmar", () -> {
             if (listaGeneros.getSelectedValue() != null) {
                 String selecionado = listaGeneros.getSelectedValue();
                 for (Genero g : generos) {
@@ -159,14 +132,40 @@ public class Genero {
             }
         });
 
-        btnCancelar.addActionListener(e -> {
+        JButton btnCancelar = UIUtils.criarBotaoComAcao("Cancelar", () -> {
             resultado[0] = null;
             dialog.dispose();
         });
 
+        JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+        if (permitirCadastro) {
+            JButton btnCadastrarNovo = UIUtils.criarBotaoComAcao("Cadastrar Novo Gênero", () -> {
+                Integer novoId = cadastrarGeneroDialog(null);
+                if (novoId != null) {
+                    resultado[0] = String.valueOf(novoId);
+                    dialog.dispose();  // fecha diálogo retornando o novo ID
+                }
+            });
+            painelBotoes.add(btnCadastrarNovo);
+        }
+
+        painelBotoes.add(btnConfirmar);
+        painelBotoes.add(btnCancelar);
+
+        JPanel painelPrincipal = new JPanel(new BorderLayout(10, 10));
+        painelPrincipal.add(scroll, BorderLayout.CENTER);
+        painelPrincipal.add(painelBotoes, BorderLayout.SOUTH);
+
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.getContentPane().add(painelPrincipal);
+        dialog.pack();
+        dialog.setLocationRelativeTo(null);
+
         dialog.setVisible(true);
         return resultado[0];
     }
+
 
     // Método público para escolher gênero só com seleção, sem cadastro
     public static String escolherGeneroSomente() {

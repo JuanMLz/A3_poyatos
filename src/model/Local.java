@@ -104,7 +104,7 @@ public class Local {
         listaLocais.setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value,
-                                                          int index, boolean isSelected, boolean cellHasFocus) {
+                                                        int index, boolean isSelected, boolean cellHasFocus) {
                 JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 label.setHorizontalAlignment(SwingConstants.CENTER);
                 return label;
@@ -114,28 +114,12 @@ public class Local {
         JScrollPane scroll = new JScrollPane(listaLocais);
         scroll.setPreferredSize(new Dimension(380, 200));
 
-        JButton btnConfirmar = UIUtils.criarBotao("Confirmar");
-        JButton btnCancelar = UIUtils.criarBotao("Cancelar");
-        JButton btnCadastrarNovo = UIUtils.criarBotao("Cadastrar Novo Local");
-
-        JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        painelBotoes.add(btnConfirmar);
-        painelBotoes.add(btnCadastrarNovo);
-        painelBotoes.add(btnCancelar);
-
-        JPanel painelPrincipal = new JPanel(new BorderLayout(10, 10));
-        painelPrincipal.add(scroll, BorderLayout.CENTER);
-        painelPrincipal.add(painelBotoes, BorderLayout.SOUTH);
-
-        final JDialog dialog = new JDialog((Frame) null, "Escolha um local", true);
-        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        dialog.getContentPane().add(painelPrincipal);
-        dialog.pack();
-        dialog.setLocationRelativeTo(null);
-
+        // Declaração antecipada para uso nos lambdas
         final String[] resultado = {null};
+        final JDialog dialog = new JDialog((Frame) null, "Escolha um local", true);
 
-        btnConfirmar.addActionListener(e -> {
+        // Criação dos botões com o método criarBotaoComAcao
+        JButton btnConfirmar = UIUtils.criarBotaoComAcao("Confirmar", () -> {
             if (listaLocais.getSelectedValue() != null) {
                 String selecionado = listaLocais.getSelectedValue();
                 for (Local l : locais) {
@@ -150,12 +134,12 @@ public class Local {
             }
         });
 
-        btnCancelar.addActionListener(e -> {
+        JButton btnCancelar = UIUtils.criarBotaoComAcao("Cancelar", () -> {
             resultado[0] = null;
             dialog.dispose();
         });
 
-        btnCadastrarNovo.addActionListener(e -> {
+        JButton btnCadastrarNovo = UIUtils.criarBotaoComAcao("Cadastrar Novo Local", () -> {
             Integer idNovo = cadastrarLocalDialog(dialog);
             if (idNovo != null) {
                 resultado[0] = String.valueOf(idNovo);
@@ -163,9 +147,24 @@ public class Local {
             }
         });
 
+        JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        painelBotoes.add(btnConfirmar);
+        painelBotoes.add(btnCadastrarNovo);
+        painelBotoes.add(btnCancelar);
+
+        JPanel painelPrincipal = new JPanel(new BorderLayout(10, 10));
+        painelPrincipal.add(scroll, BorderLayout.CENTER);
+        painelPrincipal.add(painelBotoes, BorderLayout.SOUTH);
+
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.getContentPane().add(painelPrincipal);
+        dialog.pack();
+        dialog.setLocationRelativeTo(null);
+
         dialog.setVisible(true);
         return resultado[0];
     }
+
 
     // Dialogo para cadastrar local, retorna ID cadastrado ou null
     public static Integer cadastrarLocalDialog(Window owner) {
