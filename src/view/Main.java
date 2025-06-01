@@ -45,11 +45,11 @@ public class Main {
 
         // Título e subtítulo
        ImageIcon originalIcon = new ImageIcon("src\\imagens\\iconeshowzao.png");
-Image imagemRedimensionada = originalIcon.getImage().getScaledInstance(250, 100, Image.SCALE_SMOOTH); // ajuste o tamanho aqui
-ImageIcon iconRedimensionado = new ImageIcon(imagemRedimensionada);
-// Label do titulo com imagem redimensionada
-JLabel titulo = new JLabel(iconRedimensionado, SwingConstants.CENTER);
-titulo.setHorizontalAlignment(SwingConstants.CENTER);
+        Image imagemRedimensionada = originalIcon.getImage().getScaledInstance(250, 100, Image.SCALE_SMOOTH); // ajuste o tamanho aqui
+        ImageIcon iconRedimensionado = new ImageIcon(imagemRedimensionada);
+        // Label do titulo com imagem redimensionada
+        JLabel titulo = new JLabel(iconRedimensionado, SwingConstants.CENTER);
+        titulo.setHorizontalAlignment(SwingConstants.CENTER);
 
         // Label do subtitulo
         JLabel subtitulo = new JLabel("Todos seus shows em um só lugar!", SwingConstants.CENTER);
@@ -300,40 +300,16 @@ public static void mostrarTodosOsShows() {
 
     btnCadastrarGenero.addActionListener(e -> {
         dialog.dispose();
-        cadastrarGenero(); // Chama metodo para cadastrar genero
+        Genero.cadastrarGenero(frame); // Chama metodo para cadastrar genero
     });
 
     btnCadastrarLocal.addActionListener(e -> {
         dialog.dispose();
-        cadastrarLocal(); // Chama metodo para cadastrar local
+        Local.cadastrarLocal(frame); // Chama metodo para cadastrar local
     });
 
     btnVoltar.addActionListener(e -> dialog.dispose()); // Fecha o menu
 
     dialog.setVisible(true); //Exibe o menu
-}
-
-
-
-    /**
-     * Solicita o cadastro de um novo gênero de música.
-     * Exibe uma mensagem com o nome do gênero cadastrado.
-     */
-    public static void cadastrarGenero() {
-        String nomeGenero = Genero.verificarOuCadastrar();
-        if (nomeGenero != null && !nomeGenero.isEmpty()) {
-            JOptionPane.showMessageDialog(frame, "🎶 Gênero cadastrado: " + nomeGenero);
-        }
-    }
-
-    /**
-     * Solicita o cadastro de um novo local de show.
-     * Exibe uma mensagem com o nome do local cadastrado.
-     */
-    public static void cadastrarLocal() {
-        String nomeLocal = Local.verificarOuCadastrar();
-        if (nomeLocal != null && !nomeLocal.isEmpty()) {
-            JOptionPane.showMessageDialog(frame, "📍 Local cadastrado: " + nomeLocal);
-        }
     }
 }

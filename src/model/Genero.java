@@ -163,8 +163,8 @@ public class Genero {
     JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER));
     painelBotoes.setBackground(painel.getBackground());
 
-    JButton btnConfirmar = criarBotao("Confirmar");
-    JButton btnCancelar = criarBotao("Cancelar");
+    JButton btnConfirmar = UIUtils.criarBotao("Confirmar");
+    JButton btnCancelar = UIUtils.criarBotao("Cancelar");
 
     painelBotoes.add(btnConfirmar);
     painelBotoes.add(btnCancelar);
@@ -213,20 +213,17 @@ public class Genero {
 
     dialog.setVisible(true);
     return resultado[0];
-}
+    }
 
-
-// Método auxiliar para criar botões iguais aos do menu inicial
-private static JButton criarBotao(String texto) {
-    JButton btn = new JButton(texto);
-    btn.setFocusPainted(false);
-    btn.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 14));
-    btn.setBackground(new Color(220, 220, 220));
-    btn.setForeground(Color.DARK_GRAY);
-    btn.setBorder(BorderFactory.createCompoundBorder(
-        BorderFactory.createLineBorder(new Color(180, 180, 180)),
-        BorderFactory.createEmptyBorder(10, 15, 10, 15)
-    ));
-    return btn;
+    /**
+     * Solicita o cadastro de um novo gênero de música.
+     * Exibe uma mensagem com o nome do gênero cadastrado.
+     */
+    public static void cadastrarGenero(JFrame frame) {
+        String nomeGenero = Genero.verificarOuCadastrar();
+        if (nomeGenero != null && !nomeGenero.isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "🎶 Gênero cadastrado: " + nomeGenero);
+        }
     }
 }
+

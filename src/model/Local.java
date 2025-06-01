@@ -209,4 +209,15 @@ public class Local {
         ));
         return btn;
     }
+
+    /**
+     * Solicita o cadastro de um novo local de show.
+     * Exibe uma mensagem com o nome do local cadastrado.
+     */
+    public static void cadastrarLocal(JFrame frame) {
+        String nomeLocal = Local.verificarOuCadastrar();
+        if (nomeLocal != null && !nomeLocal.isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "📍 Local cadastrado: " + nomeLocal);
+        }
+    }
 }
