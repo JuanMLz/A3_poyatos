@@ -3,10 +3,10 @@ package view;
 import model.Genero;
 import model.Local;
 import model.Show;
+import model.UIUtils;
+
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
-
 import java.awt.*;
 import java.util.List;
 
@@ -68,10 +68,10 @@ titulo.setHorizontalAlignment(SwingConstants.CENTER);
         botoes.setBackground(new Color(245, 245, 245));
 
         // Botões de ação
-        JButton btnMostrar = criarBotao("📋 Mostrar Shows");
-        JButton btnPesquisar = criarBotao("🔎 Pesquisar Shows por Gênero");
-        JButton btnCadastrar = criarBotao("📝 Cadastrar");
-        JButton btnSair = criarBotao("🚪 Sair");
+        JButton btnMostrar = UIUtils.criarBotao("📋 Mostrar Shows");
+        JButton btnPesquisar = UIUtils.criarBotao("🔎 Pesquisar Shows por Gênero");
+        JButton btnCadastrar = UIUtils.criarBotao("📝 Cadastrar");
+        JButton btnSair = UIUtils.criarBotao("🚪 Sair");
         // Adiciona os botoes ao painel
         botoes.add(btnMostrar);
         botoes.add(btnPesquisar);
@@ -94,48 +94,28 @@ titulo.setHorizontalAlignment(SwingConstants.CENTER);
         frame.setVisible(true);
     }
 
-    /**
-     * Cria um botão estilizado com o texto fornecido.
-     * 
-     * @param texto O texto que será exibido no botão
-     * @return O botão estilizado
-     */
-    private static JButton criarBotao(String texto) {
-        JButton btn = new JButton(texto);
-        btn.setFocusPainted(false);
-        btn.setFont(new Font("Segoe UI Emoji", Font.BOLD, 16));
-        btn.setBackground(new Color(220, 220, 220));
-        btn.setForeground(Color.DARK_GRAY);
-        btn.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(180, 180, 180)),
-            BorderFactory.createEmptyBorder(10, 15, 10, 15)
-        ));
-        return btn;
-    }
 
     /**
      * Exibe todos os shows cadastrados no sistema.
      * Se não houver shows cadastrados, uma mensagem de alerta é exibida.
      */
 public static void mostrarTodosOsShows() {
-    List<Show> shows = Show.getShows(); // Busca todos os shows
-    List<Genero> generos = Genero.getGeneros(); // Genero para exibicao
-    List<Local> locais = Local.getLocais(); // Locais para exibicao
-    // Caso na haja shows cadastrados, exibe mensagem e retorna
+    List<Show> shows = Show.getShows();
+    List<Genero> generos = Genero.getGeneros();
+    List<Local> locais = Local.getLocais();
+
     if (shows.isEmpty()) {
         JOptionPane.showMessageDialog(frame, "Não há shows cadastrados.");
         return;
     }
-    // Painel vertical para listar os shows
+
     JPanel painelShows = new JPanel();
     painelShows.setLayout(new BoxLayout(painelShows, BoxLayout.Y_AXIS));
     painelShows.setBackground(new Color(245, 245, 245));
     painelShows.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-    // Criamos um array para armazenar o dialog fora do loop
     final JDialog[] dialog = new JDialog[1];
-    
-    // Cria um card para cada show exibindo sua informacoes
+
     for (Show show : shows) {
         JPanel cardShow = new JPanel();
         cardShow.setLayout(new BoxLayout(cardShow, BoxLayout.Y_AXIS));
@@ -146,7 +126,7 @@ public static void mostrarTodosOsShows() {
         cardShow.setBackground(Color.WHITE);
         cardShow.setAlignmentX(Component.LEFT_ALIGNMENT);
         cardShow.setMaximumSize(new Dimension(360, Integer.MAX_VALUE));
-    // Obtem nome do genero e local pelo codigo
+
         String nomeGenero = generos.stream()
                 .filter(g -> g.id == show.codGenero)
                 .map(g -> g.nome)
@@ -158,7 +138,7 @@ public static void mostrarTodosOsShows() {
                 .map(l -> l.nome)
                 .findFirst()
                 .orElse("Desconhecido");
-    // Criacao dos labels para exibir dados do show
+
         JLabel lblNome = new JLabel(show.nome);
         lblNome.setFont(new Font("Segoe UI Emoji", Font.BOLD, 16));
         lblNome.setForeground(new Color(44, 62, 80));
@@ -174,7 +154,7 @@ public static void mostrarTodosOsShows() {
         JLabel lblGenero = new JLabel("<html>Gênero: " + nomeGenero + "</html>");
         lblGenero.setFont(new Font("Segoe UI Emoji", Font.ITALIC, 13));
         lblGenero.setForeground(new Color(120, 120, 120));
-    // Label para link clicavel do show
+
         JLabel lblLink = new JLabel("<html><a href=\"" + show.link + "\">Link do show</a></html>");
         lblLink.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 13));
         lblLink.setForeground(new Color(10, 102, 194));
@@ -188,27 +168,13 @@ public static void mostrarTodosOsShows() {
                 }
             }
         });
-      // Botao para excluir show
-        JButton btnExcluir = criarBotao("Excluir");
-        btnExcluir.setBackground(new Color(255, 102, 102));
-        btnExcluir.setForeground(Color.WHITE);
-        btnExcluir.setBorder(new LineBorder(new Color(200, 0, 0), 1, true));
-        btnExcluir.addActionListener(e -> {
-            // Confirmacao para exclusao
-            int confirmacao = JOptionPane.showConfirmDialog(
-                frame,
-                "Tem certeza que deseja excluir o show \"" + show.nome + "\"?",
-                "Confirmar Exclusão",
-                JOptionPane.YES_NO_OPTION
-            );
-            if (confirmacao == JOptionPane.YES_OPTION) {
-                Show.removerShow(show);
-                dialog[0].dispose(); // Fecha o diálogo atual
-                mostrarTodosOsShows(); // Reabre com lista atualizada
-            }
+
+        // Aqui usamos UIUtils para criar o botão Excluir
+        JButton btnExcluir = UIUtils.criarBotaoExcluir(show, frame, () -> {
+            dialog[0].dispose();
+            mostrarTodosOsShows();
         });
-       
-           // Montagem do card show
+
         cardShow.add(lblNome);
         cardShow.add(Box.createVerticalStrut(5));
         cardShow.add(lblLocal);
@@ -218,17 +184,17 @@ public static void mostrarTodosOsShows() {
         cardShow.add(lblLink);
         cardShow.add(Box.createVerticalStrut(10));
         cardShow.add(btnExcluir);
-          // Adiciona o card ao painel principal
+
         painelShows.add(cardShow);
         painelShows.add(Box.createVerticalStrut(15));
     }
-          // Painel de scroll para comportar muitos shows
+
     JScrollPane scrollPane = new JScrollPane(painelShows);
     scrollPane.setPreferredSize(new Dimension(380, 300));
     scrollPane.getVerticalScrollBar().setUnitIncrement(12);
-          // Botao OK para fechar o dialogo
-    JButton okButton = criarBotao("OK");
-          // Cria um JOptionPane customizado para exibir o painel com scroll
+
+    JButton okButton = UIUtils.criarBotao("OK");
+
     JOptionPane optionPane = new JOptionPane(
         scrollPane,
         JOptionPane.PLAIN_MESSAGE,
@@ -239,11 +205,12 @@ public static void mostrarTodosOsShows() {
     );
 
     dialog[0] = optionPane.createDialog(frame, "Shows Cadastrados");
-    // Fecha o dialogo quando clicar em ok
+
     okButton.addActionListener(e -> dialog[0].dispose());
 
     dialog[0].setVisible(true);
 }
+
 
 
     /**
@@ -311,10 +278,10 @@ public static void mostrarTodosOsShows() {
     painel.setBackground(new Color(245, 245, 245));
     painel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
     // Cria os botoes para opcao de cadastro
-    JButton btnCadastrarShow = criarBotao("Cadastrar Show");
-    JButton btnCadastrarGenero = criarBotao("Cadastrar Gênero");
-    JButton btnCadastrarLocal = criarBotao("Cadastrar Local");
-    JButton btnVoltar = criarBotao("Voltar");
+    JButton btnCadastrarShow = UIUtils.criarBotao("Cadastrar Show");
+    JButton btnCadastrarGenero = UIUtils.criarBotao("Cadastrar Gênero");
+    JButton btnCadastrarLocal = UIUtils.criarBotao("Cadastrar Local");
+    JButton btnVoltar = UIUtils.criarBotao("Voltar");
     // Adiciona os botoes ao painel
     painel.add(btnCadastrarShow);
     painel.add(btnCadastrarGenero);
@@ -338,7 +305,7 @@ public static void mostrarTodosOsShows() {
 
     btnCadastrarLocal.addActionListener(e -> {
         dialog.dispose();
-        cadastrarLocal(); // Chama metodoo para cadastrar local
+        cadastrarLocal(); // Chama metodo para cadastrar local
     });
 
     btnVoltar.addActionListener(e -> dialog.dispose()); // Fecha o menu

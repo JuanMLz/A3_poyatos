@@ -42,6 +42,8 @@ public class Local {
         return -1;
     }
 
+    
+
     public static List<Local> getLocais() {
         List<Local> lista = new ArrayList<>();
         String sql = "SELECT id, nome FROM local ORDER BY nome";
