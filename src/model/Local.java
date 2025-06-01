@@ -24,19 +24,17 @@ public class Local {
         this.nome = nome;
     }
 
+    // Cadastra um novo local, evita duplicatas, retorna ID ou -1
     private static int cadastrar(String nome) {
-        // Verifica se já existe local com esse nome (evitar duplicidade)
         if (existeLocal(nome)) {
             JOptionPane.showMessageDialog(null, "Local já cadastrado: " + nome);
             return -1;
         }
-
         String sql = "INSERT INTO local (nome) VALUES (?)";
         try (Connection conn = Conexao.getConexao();
              PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, nome);
             ps.executeUpdate();
-
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
                 JOptionPane.showMessageDialog(null, "Local cadastrado com sucesso!");
@@ -48,6 +46,7 @@ public class Local {
         return -1;
     }
 
+    // Verifica se o local já existe (ignora caixa alta/baixa)
     private static boolean existeLocal(String nome) {
         String sql = "SELECT COUNT(*) FROM local WHERE LOWER(nome) = LOWER(?)";
         try (Connection conn = Conexao.getConexao();
@@ -63,6 +62,7 @@ public class Local {
         return false;
     }
 
+    // Retorna a lista de todos os locais cadastrados, ordenados por nome
     public static List<Local> getLocais() {
         List<Local> lista = new ArrayList<>();
         String sql = "SELECT id, nome FROM local ORDER BY nome";
@@ -83,7 +83,7 @@ public class Local {
         return lista;
     }
 
-    // Método para escolher local com opção de cadastrar novo local
+    // Dialogo para escolher local ou cadastrar novo, retorna ID selecionado ou cadastrado
     public static String escolherLocalComCadastro() {
         List<Local> locais = getLocais();
 
@@ -101,7 +101,6 @@ public class Local {
         listaLocais.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         listaLocais.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         listaLocais.setVisibleRowCount(10);
-
         listaLocais.setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value,
@@ -117,14 +116,11 @@ public class Local {
 
         JButton btnConfirmar = UIUtils.criarBotao("Confirmar");
         JButton btnCancelar = UIUtils.criarBotao("Cancelar");
+        JButton btnCadastrarNovo = UIUtils.criarBotao("Cadastrar Novo Local");
 
         JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER));
         painelBotoes.add(btnConfirmar);
-
-        // Botão para cadastrar novo local
-        JButton btnCadastrarNovo = UIUtils.criarBotao("Cadastrar Novo Local");
         painelBotoes.add(btnCadastrarNovo);
-
         painelBotoes.add(btnCancelar);
 
         JPanel painelPrincipal = new JPanel(new BorderLayout(10, 10));
@@ -163,16 +159,15 @@ public class Local {
             Integer idNovo = cadastrarLocalDialog(dialog);
             if (idNovo != null) {
                 resultado[0] = String.valueOf(idNovo);
-                dialog.dispose(); // Fecha diálogo e retorna o novo local cadastrado
+                dialog.dispose();
             }
         });
 
         dialog.setVisible(true);
-
         return resultado[0];
     }
 
-    // Método para cadastrar novo local via input simples, retorna ID do local cadastrado ou null
+    // Dialogo para cadastrar local, retorna ID cadastrado ou null
     public static Integer cadastrarLocalDialog(Window owner) {
         String nome = JOptionPane.showInputDialog(owner, "Digite o nome do novo local:");
         if (nome == null || nome.trim().isEmpty()) {
@@ -188,9 +183,8 @@ public class Local {
         return null;
     }
 
-    // Método para cadastrar local simples, exibe mensagem após cadastro (para menu cadastro)
+    // Cadastro simples de local via menu, exibe mensagem de sucesso/erro
     public static void cadastrarLocal(JFrame frame) {
-        Integer id = cadastrarLocalDialog(frame);
-        // Não precisa tratar o retorno aqui, pois a mensagem já é exibida em cadastrarLocalDialog
+        cadastrarLocalDialog(frame);
     }
 }

@@ -1,6 +1,5 @@
 package model;
 
-// Imports necessários para operações com Banco de Dados e manipulação de coleções
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,18 +14,18 @@ import dao.Conexao;
 
 public class Show {
 
-    // Variáveis da classe que representam os atributos dos shows
-    public int id; // Identificador único do show
-    public int codGenero; // Código do gênero associado ao show
-    public int codLocal; // Código do local associado ao show
-    public String nome; // Nome do show
-    public String data; // Data do show
-    public String link; // Link associado à venda do ingresso do show
+    // Atributos que armazenam as informações de um show
+    public int id;         // Identificador único no banco
+    public int codGenero;  // Código do gênero musical associado
+    public int codLocal;   // Código do local onde o show acontecerá
+    public String nome;    // Nome do show
+    public String data;    // Data do show no formato DD/MM
+    public String link;    // Link para venda de ingressos ou informações
 
-    // Construtor vazio
+    // Construtor padrão (vazio)
     public Show() {}
 
-    // Construtor com todos os argumentos
+    // Construtor completo para facilitar criação de objetos com todos os dados
     public Show(int id, String nome, String data, int codGenero, int codLocal, String link) {
         this.id = id;
         this.nome = nome;
@@ -37,17 +36,21 @@ public class Show {
     }
 
     /**
-     * Método estático para obter todos os shows do banco de dados.
-     *
-     * @return lista de shows obtidos do banco de dados.
+     * Retorna uma lista com todos os shows cadastrados no banco de dados.
+     * A consulta retorna os dados ordenados alfabeticamente pelo nome do show.
+     * 
+     * @return Lista de objetos Show com todos os shows encontrados.
      */
     public static List<Show> getShows() {
         List<Show> lista = new ArrayList<>();
         String sql = "SELECT id, nome, data, codGenero, codLocal, link FROM shows ORDER BY nome";
+
+        // Tenta abrir conexão, preparar a consulta e executar
         try (Connection conn = Conexao.getConexao();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
+            // Para cada registro retornado, cria um objeto Show e adiciona na lista
             while (rs.next()) {
                 Show show = new Show(
                     rs.getInt("id"),
@@ -60,15 +63,18 @@ public class Show {
                 lista.add(show);
             }
         } catch (SQLException e) {
+            // Caso ocorra erro, exibe mensagem para o usuário
             JOptionPane.showMessageDialog(null, "Erro ao obter shows: " + e.getMessage());
         }
-        return lista;
+        return lista; // Retorna a lista, mesmo que vazia se não houver registros
     }
 
     /**
-     * Método estático para cadastrar um novo show.
-     * Coleta os dados do usuário e usa os métodos atualizados para escolher gênero e local,
-     * ambos com opção para cadastrar novos itens.
+     * Exibe uma janela para o usuário cadastrar um novo show.
+     * O formulário solicita nome e data do show.
+     * O usuário escolhe ou cadastra um gênero e um local.
+     * Também pode informar um link (opcional).
+     * Caso o usuário cancele em qualquer etapa, o cadastro é abortado.
      */
     public static void cadastrarShow() {
         JPanel painel = new JPanel();
@@ -99,6 +105,7 @@ public class Show {
         painel.add(Box.createRigidArea(new Dimension(0, 5)));
         painel.add(campoData);
 
+        // Exibe janela com OK e Cancelar para o usuário preencher os dados
         int resultado = JOptionPane.showConfirmDialog(
             null,
             painel,
@@ -107,43 +114,49 @@ public class Show {
             JOptionPane.PLAIN_MESSAGE
         );
 
+        // Se o usuário confirmar o cadastro, processa os dados
         if (resultado == JOptionPane.OK_OPTION) {
             String nome = campoNome.getText().trim();
             String data = campoData.getText().trim();
 
+            // Valida que nome e data foram preenchidos
             if (nome.isEmpty() || data.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Por favor, preencha nome e data do show.");
-                return;
+                return; // Interrompe o processo se dados inválidos
             }
 
-            // Escolher gênero com opção de cadastrar novo
+            // Escolha do gênero, com opção para cadastrar novo gênero na hora
             String codGeneroStr = Genero.escolherGeneroComCadastro();
             if (codGeneroStr == null) {
                 JOptionPane.showMessageDialog(null, "Operação cancelada.");
-                return;
+                return; // Interrompe se o usuário cancelar
             }
             int codGenero = Integer.parseInt(codGeneroStr);
 
-            // Escolher local com opção de cadastrar novo (método novo similar ao do Genero)
+            // Escolha do local, com opção para cadastrar novo local na hora
             String codLocalStr = Local.escolherLocalComCadastro();
             if (codLocalStr == null) {
                 JOptionPane.showMessageDialog(null, "Operação cancelada.");
-                return;
+                return; // Interrompe se o usuário cancelar
             }
             int codLocal = Integer.parseInt(codLocalStr);
 
+            // Solicita link para o show (opcional)
             String link = JOptionPane.showInputDialog("Digite o link do show:");
 
+            // Cria objeto Show com os dados coletados
             Show show = new Show(0, nome, data, codGenero, codLocal, link);
 
+            // Persiste no banco de dados
             cadastrar(show);
         }
     }
 
     /**
-     * Método estático para inserir um show no banco de dados.
-     *
-     * @param show objeto que contém os dados do show a ser cadastrado
+     * Insere os dados do show no banco de dados.
+     * Exibe mensagem de sucesso ou erro para o usuário.
+     * 
+     * @param show Objeto contendo os dados do show a ser inserido.
      */
     public static void cadastrar(Show show) {
         String sql = "INSERT INTO shows (nome, data, codGenero, codLocal, link) VALUES (?, ?, ?, ?, ?)";
@@ -163,7 +176,10 @@ public class Show {
     }
 
     /**
-     * Método estático para remover um show do banco usando o id do show
+     * Remove o show do banco de dados usando o id do objeto fornecido.
+     * Exibe mensagem de sucesso ou erro para o usuário.
+     * 
+     * @param show Objeto Show que será removido (usa seu id).
      */
     public static void removerShow(Show show) {
         String sql = "DELETE FROM shows WHERE id = ?";
