@@ -25,6 +25,12 @@ public class Local {
     }
 
     private static int cadastrar(String nome) {
+        // Verifica se já existe local com esse nome (evitar duplicidade)
+        if (existeLocal(nome)) {
+            JOptionPane.showMessageDialog(null, "Local já cadastrado: " + nome);
+            return -1;
+        }
+
         String sql = "INSERT INTO local (nome) VALUES (?)";
         try (Connection conn = Conexao.getConexao();
              PreparedStatement ps = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -33,16 +39,29 @@ public class Local {
 
             ResultSet rs = ps.getGeneratedKeys();
             if (rs.next()) {
+                JOptionPane.showMessageDialog(null, "Local cadastrado com sucesso!");
                 return rs.getInt(1);
             }
-            JOptionPane.showMessageDialog(null, "Local cadastrado com sucesso!");
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro ao cadastrar local: " + e.getMessage());
         }
         return -1;
     }
 
-    
+    private static boolean existeLocal(String nome) {
+        String sql = "SELECT COUNT(*) FROM local WHERE LOWER(nome) = LOWER(?)";
+        try (Connection conn = Conexao.getConexao();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, nome);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao verificar local: " + e.getMessage());
+        }
+        return false;
+    }
 
     public static List<Local> getLocais() {
         List<Local> lista = new ArrayList<>();
@@ -64,59 +83,25 @@ public class Local {
         return lista;
     }
 
-    public static String verificarOuCadastrar() {
+    // Método para escolher local com opção de cadastrar novo local
+    public static String escolherLocalComCadastro() {
         List<Local> locais = getLocais();
 
-        JDialog dialog = new JDialog((Frame) null, "Cadastrar ou Escolher Local", true);
-        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        dialog.setMinimumSize(new Dimension(450, 400));
-        dialog.setLocationRelativeTo(null);
+        if (locais.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Nenhum local cadastrado.");
+            return null;
+        }
 
-        JPanel painel = new JPanel(new BorderLayout(10, 10));
-        painel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
-        painel.setBackground(new Color(245, 245, 245));
-
-        // Campo para novo local
-        JPanel painelNovo = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        painelNovo.setBackground(painel.getBackground());
-
-        JLabel labelNovo = new JLabel("Digite um novo local:");
-        labelNovo.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-
-        JTextField campoNovo = new JTextField();
-        campoNovo.setFont(new Font("Segoe UI", Font.PLAIN, 20));
-        campoNovo.setPreferredSize(new Dimension(350, 45));
-        campoNovo.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(150, 150, 150), 2, true),
-            BorderFactory.createEmptyBorder(6, 10, 6, 10)
-        ));
-
-        JPanel painelCampoVertical = new JPanel();
-        painelCampoVertical.setLayout(new BoxLayout(painelCampoVertical, BoxLayout.Y_AXIS));
-        painelCampoVertical.setBackground(painel.getBackground());
-        labelNovo.setAlignmentX(Component.CENTER_ALIGNMENT);
-        campoNovo.setAlignmentX(Component.CENTER_ALIGNMENT);
-        painelCampoVertical.add(labelNovo);
-        painelCampoVertical.add(Box.createRigidArea(new Dimension(0, 8)));
-        painelCampoVertical.add(campoNovo);
-
-        painelNovo.add(painelCampoVertical);
-
-        // Lista dos locais existentes
-        JPanel painelLista = new JPanel(new BorderLayout(5, 5));
-        painelLista.setBackground(painel.getBackground());
-
-        JLabel labelLista = new JLabel("Ou escolha um local existente:");
-        labelLista.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         DefaultListModel<String> listModel = new DefaultListModel<>();
         for (Local l : locais) {
             listModel.addElement(l.nome);
         }
+
         JList<String> listaLocais = new JList<>(listModel);
         listaLocais.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-        // Fonte e alinhamento central da lista
         listaLocais.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+        listaLocais.setVisibleRowCount(10);
+
         listaLocais.setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value,
@@ -128,64 +113,45 @@ public class Local {
         });
 
         JScrollPane scroll = new JScrollPane(listaLocais);
-        scroll.setPreferredSize(new Dimension(380, 160));
+        scroll.setPreferredSize(new Dimension(380, 200));
 
-        painelLista.add(labelLista, BorderLayout.NORTH);
-        painelLista.add(scroll, BorderLayout.CENTER);
+        JButton btnConfirmar = UIUtils.criarBotao("Confirmar");
+        JButton btnCancelar = UIUtils.criarBotao("Cancelar");
 
-        // Painel central
-        JPanel painelCentro = new JPanel();
-        painelCentro.setLayout(new BoxLayout(painelCentro, BoxLayout.Y_AXIS));
-        painelCentro.setBackground(painel.getBackground());
-        painelCentro.add(painelNovo);
-        painelCentro.add(Box.createRigidArea(new Dimension(0, 20)));
-        painelCentro.add(painelLista);
-
-        // Painel de botões
         JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        painelBotoes.setBackground(painel.getBackground());
-
-        JButton btnConfirmar = criarBotao("Confirmar");
-        JButton btnCancelar = criarBotao("Cancelar");
-
         painelBotoes.add(btnConfirmar);
+
+        // Botão para cadastrar novo local
+        JButton btnCadastrarNovo = UIUtils.criarBotao("Cadastrar Novo Local");
+        painelBotoes.add(btnCadastrarNovo);
+
         painelBotoes.add(btnCancelar);
 
-        painel.add(painelCentro, BorderLayout.CENTER);
-        painel.add(painelBotoes, BorderLayout.SOUTH);
+        JPanel painelPrincipal = new JPanel(new BorderLayout(10, 10));
+        painelPrincipal.add(scroll, BorderLayout.CENTER);
+        painelPrincipal.add(painelBotoes, BorderLayout.SOUTH);
 
-        dialog.getContentPane().add(painel);
+        final JDialog dialog = new JDialog((Frame) null, "Escolha um local", true);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.getContentPane().add(painelPrincipal);
         dialog.pack();
-        dialog.setMinimumSize(dialog.getSize());
+        dialog.setLocationRelativeTo(null);
 
         final String[] resultado = {null};
 
         btnConfirmar.addActionListener(e -> {
-            String novoLocal = campoNovo.getText().trim();
-
-            if (!novoLocal.isEmpty()) {
-                int id = cadastrar(novoLocal);
-                if (id != -1) {
-                    resultado[0] = String.valueOf(id);
-                    dialog.dispose();
-                } else {
-                    JOptionPane.showMessageDialog(dialog, "Erro ao cadastrar novo local.");
-                }
-                return;
-            }
-
-            String selecionado = listaLocais.getSelectedValue();
-            if (selecionado != null) {
+            if (listaLocais.getSelectedValue() != null) {
+                String selecionado = listaLocais.getSelectedValue();
                 for (Local l : locais) {
                     if (l.nome.equalsIgnoreCase(selecionado)) {
                         resultado[0] = String.valueOf(l.id);
-                        dialog.dispose();
-                        return;
+                        break;
                     }
                 }
+                dialog.dispose();
+            } else {
+                JOptionPane.showMessageDialog(dialog, "Por favor, selecione um local.");
             }
-
-            JOptionPane.showMessageDialog(dialog, "Por favor, digite um novo local ou selecione um existente.");
         });
 
         btnCancelar.addActionListener(e -> {
@@ -193,31 +159,38 @@ public class Local {
             dialog.dispose();
         });
 
+        btnCadastrarNovo.addActionListener(e -> {
+            Integer idNovo = cadastrarLocalDialog(dialog);
+            if (idNovo != null) {
+                resultado[0] = String.valueOf(idNovo);
+                dialog.dispose(); // Fecha diálogo e retorna o novo local cadastrado
+            }
+        });
+
         dialog.setVisible(true);
+
         return resultado[0];
     }
 
-    private static JButton criarBotao(String texto) {
-        JButton btn = new JButton(texto);
-        btn.setFocusPainted(false);
-        btn.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 14));
-        btn.setBackground(new Color(220, 220, 220));
-        btn.setForeground(Color.DARK_GRAY);
-        btn.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(180, 180, 180)),
-            BorderFactory.createEmptyBorder(10, 15, 10, 15)
-        ));
-        return btn;
+    // Método para cadastrar novo local via input simples, retorna ID do local cadastrado ou null
+    public static Integer cadastrarLocalDialog(Window owner) {
+        String nome = JOptionPane.showInputDialog(owner, "Digite o nome do novo local:");
+        if (nome == null || nome.trim().isEmpty()) {
+            return null;
+        }
+        nome = nome.trim();
+
+        int id = cadastrar(nome);
+        if (id != -1) {
+            JOptionPane.showMessageDialog(owner, "📍 Local cadastrado: " + nome);
+            return id;
+        }
+        return null;
     }
 
-    /**
-     * Solicita o cadastro de um novo local de show.
-     * Exibe uma mensagem com o nome do local cadastrado.
-     */
+    // Método para cadastrar local simples, exibe mensagem após cadastro (para menu cadastro)
     public static void cadastrarLocal(JFrame frame) {
-        String nomeLocal = Local.verificarOuCadastrar();
-        if (nomeLocal != null && !nomeLocal.isEmpty()) {
-            JOptionPane.showMessageDialog(frame, "📍 Local cadastrado: " + nomeLocal);
-        }
+        Integer id = cadastrarLocalDialog(frame);
+        // Não precisa tratar o retorno aqui, pois a mensagem já é exibida em cadastrarLocalDialog
     }
 }

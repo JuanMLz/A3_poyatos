@@ -153,7 +153,7 @@ public class Main {
      * Se não houver shows para o gênero selecionado, uma mensagem de alerta é exibida.
      */
     public static void pesquisarPorGenero() {
-    String idGeneroStr = Genero.escolherGenero();
+    String idGeneroStr = Genero.escolherGeneroSomente();
     if (idGeneroStr == null) {
         return; // operação cancelada ou nada selecionado
     }
@@ -245,7 +245,7 @@ public class Main {
 
         btnCadastrarGenero.addActionListener(e -> {
             dialog.dispose();
-            Genero.cadastrarGenero(frame); // Chama metodo para cadastrar genero
+            Genero.cadastrarGeneroDialog(frame); // Chama metodo para cadastrar genero
         });
 
         btnCadastrarLocal.addActionListener(e -> {
