@@ -225,5 +225,85 @@ public class Genero {
             JOptionPane.showMessageDialog(frame, "🎶 Gênero cadastrado: " + nomeGenero);
         }
     }
+
+    public static String escolherGenero() {
+    List<Genero> generos = getGeneros();
+
+    if (generos.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Nenhum gênero cadastrado.");
+        return null;
+    }
+
+    DefaultListModel<String> listModel = new DefaultListModel<>();
+    for (Genero g : generos) {
+        listModel.addElement(g.nome);
+    }
+
+    JList<String> listaGeneros = new JList<>(listModel);
+    listaGeneros.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    listaGeneros.setFont(new Font("Segoe UI", Font.PLAIN, 20));
+    listaGeneros.setVisibleRowCount(10);
+
+    listaGeneros.setCellRenderer(new DefaultListCellRenderer() {
+        @Override
+        public Component getListCellRendererComponent(JList<?> list, Object value,
+                                                      int index, boolean isSelected, boolean cellHasFocus) {
+            JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            label.setHorizontalAlignment(SwingConstants.CENTER);
+            return label;
+        }
+    });
+
+    JScrollPane scroll = new JScrollPane(listaGeneros);
+    scroll.setPreferredSize(new Dimension(380, 200));
+
+    // Cria botões com UIUtils
+    JButton btnConfirmar = UIUtils.criarBotao("Confirmar");
+    JButton btnCancelar = UIUtils.criarBotao("Cancelar");
+
+    // Painel para os botões
+    JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    painelBotoes.add(btnConfirmar);
+    painelBotoes.add(btnCancelar);
+
+    // Painel principal com scroll e botões
+    JPanel painelPrincipal = new JPanel(new BorderLayout(10, 10));
+    painelPrincipal.add(scroll, BorderLayout.CENTER);
+    painelPrincipal.add(painelBotoes, BorderLayout.SOUTH);
+
+    JDialog dialog = new JDialog((Frame) null, "Escolha um gênero", true);
+    dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+    dialog.getContentPane().add(painelPrincipal);
+    dialog.pack();
+    dialog.setLocationRelativeTo(null);
+
+    final String[] resultado = {null};
+
+    btnConfirmar.addActionListener(e -> {
+        if (listaGeneros.getSelectedValue() != null) {
+            String selecionado = listaGeneros.getSelectedValue();
+            for (Genero g : generos) {
+                if (g.nome.equalsIgnoreCase(selecionado)) {
+                    resultado[0] = String.valueOf(g.id);
+                    break;
+                }
+            }
+            dialog.dispose();
+        } else {
+            JOptionPane.showMessageDialog(dialog, "Por favor, selecione um gênero.");
+        }
+    });
+
+    btnCancelar.addActionListener(e -> {
+        resultado[0] = null;
+        dialog.dispose();
+    });
+
+    dialog.setVisible(true);
+
+    return resultado[0];
+}
+
+
 }
 

@@ -148,106 +148,113 @@ public class Main {
         dialog[0].setVisible(true);
     }
 
-
-
-
     /**
      * Permite ao usuário pesquisar shows por gênero.
      * Se não houver shows para o gênero selecionado, uma mensagem de alerta é exibida.
      */
     public static void pesquisarPorGenero() {
-        List<Genero> generos = Genero.getGeneros();
-        if (generos.isEmpty()) {
-            JOptionPane.showMessageDialog(frame, "Nenhum gênero cadastrado.");
-            return;
-        }
-        
-        // Converte lista de generos para array de nome para JComboBox
-        String[] nomesGeneros = generos.stream().map(g -> g.nome).toArray(String[]::new);
-        JComboBox<String> combo = new JComboBox<>(nomesGeneros);
-        combo.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 14));
-        // Painel com label e combo para selecao
-        JPanel panel = new JPanel(new BorderLayout(5, 5));
-        panel.setBackground(new Color(245, 245, 245));
-        panel.add(new JLabel("Escolha um gênero:"), BorderLayout.NORTH);
-        panel.add(combo, BorderLayout.CENTER);
-        // Exibe dialogo para escolha de genero
-        int resultado = JOptionPane.showConfirmDialog(
-            frame,
-            panel,
-            "Pesquisar por Gênero",
-            JOptionPane.OK_CANCEL_OPTION,
-            JOptionPane.PLAIN_MESSAGE
-        );
-        // Se o usuario confirmar
-        if (resultado == JOptionPane.OK_OPTION) {
-            String escolhido = (String) combo.getSelectedItem();
-            // Obtem o id do genero selecionado
-            int idGenero = generos.stream()
-                                  .filter(g -> g.nome.equalsIgnoreCase(escolhido))
-                                  .findFirst()
-                                  .map(g -> g.id)
-                                  .orElse(-1);
-            // Monta a lista de shows para esse genero
-            String listaShows = Show.montarStringShowsPorGenero(idGenero);
-            if (listaShows.isEmpty()) {
-                JOptionPane.showMessageDialog(frame, "Não há shows cadastrados para este gênero.");
-            } else {
-            // Exibe os shows encontrados em uma area
-                JTextArea areaTexto = new JTextArea(listaShows);
-                areaTexto.setEditable(false);
-                areaTexto.setFont(new Font("Monospaced", Font.PLAIN, 12));
-                JScrollPane scrollPane = new JScrollPane(areaTexto);
-                scrollPane.setPreferredSize(new Dimension(350, 200));
-                JOptionPane.showMessageDialog(frame, scrollPane, "Shows por Gênero", JOptionPane.INFORMATION_MESSAGE);
-            }
-        }
+    String idGeneroStr = Genero.escolherGenero();
+    if (idGeneroStr == null) {
+        return; // operação cancelada ou nada selecionado
     }
+    int idGenero = Integer.parseInt(idGeneroStr);
+
+    List<Show> shows = Show.getShows();
+    List<Genero> generos = Genero.getGeneros();
+    List<Local> locais = Local.getLocais();
+
+    List<Show> showsFiltrados = shows.stream()
+                                    .filter(s -> s.codGenero == idGenero)
+                                    .toList();
+
+    if (showsFiltrados.isEmpty()) {
+        JOptionPane.showMessageDialog(frame, "Não há shows cadastrados para este gênero.");
+        return;
+    }
+
+    JPanel painelShows = new JPanel();
+    painelShows.setLayout(new BoxLayout(painelShows, BoxLayout.Y_AXIS));
+    painelShows.setBackground(new Color(245, 245, 245));
+    painelShows.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+    final JDialog[] dialog = new JDialog[1];
+
+    for (Show show : showsFiltrados) {
+        JPanel cardShow = UIUtils.criarCardShow(show, generos, locais, frame, () -> {
+            dialog[0].dispose();
+            pesquisarPorGenero();
+        });
+
+        painelShows.add(cardShow);
+        painelShows.add(Box.createVerticalStrut(15));
+    }
+
+    JScrollPane scrollPane = new JScrollPane(painelShows);
+    scrollPane.setPreferredSize(new Dimension(380, 300));
+    scrollPane.getVerticalScrollBar().setUnitIncrement(12);
+
+    JButton okButton = UIUtils.criarBotao("OK");
+
+    JOptionPane optionPane = new JOptionPane(
+        scrollPane,
+        JOptionPane.PLAIN_MESSAGE,
+        JOptionPane.DEFAULT_OPTION,
+        null,
+        new Object[]{okButton},
+        okButton
+    );
+
+    dialog[0] = optionPane.createDialog(frame, "Shows por Gênero");
+
+    okButton.addActionListener(e -> dialog[0].dispose());
+
+    dialog[0].setVisible(true);
+}
 
     /**
      * Exibe um menu de cadastro para o usuário escolher entre cadastrar show, gênero, local ou voltar.
      */
     public static void menuCadastro() {
-    // Cria um diálogo modal com o JFrame como dono
-    JDialog dialog = new JDialog(frame, "Cadastro", true);
-    dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-    // Painel com GridLayout para 4 botoes
-    JPanel painel = new JPanel(new GridLayout(4, 1, 0, 10));
-    painel.setBackground(new Color(245, 245, 245));
-    painel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-    // Cria os botoes para opcao de cadastro
-    JButton btnCadastrarShow = UIUtils.criarBotao("Cadastrar Show");
-    JButton btnCadastrarGenero = UIUtils.criarBotao("Cadastrar Gênero");
-    JButton btnCadastrarLocal = UIUtils.criarBotao("Cadastrar Local");
-    JButton btnVoltar = UIUtils.criarBotao("Voltar");
-    // Adiciona os botoes ao painel
-    painel.add(btnCadastrarShow);
-    painel.add(btnCadastrarGenero);
-    painel.add(btnCadastrarLocal);
-    painel.add(btnVoltar);
+        // Cria um diálogo modal com o JFrame como dono
+        JDialog dialog = new JDialog(frame, "Cadastro", true);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        // Painel com GridLayout para 4 botoes
+        JPanel painel = new JPanel(new GridLayout(4, 1, 0, 10));
+        painel.setBackground(new Color(245, 245, 245));
+        painel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        // Cria os botoes para opcao de cadastro
+        JButton btnCadastrarShow = UIUtils.criarBotao("Cadastrar Show");
+        JButton btnCadastrarGenero = UIUtils.criarBotao("Cadastrar Gênero");
+        JButton btnCadastrarLocal = UIUtils.criarBotao("Cadastrar Local");
+        JButton btnVoltar = UIUtils.criarBotao("Voltar");
+        // Adiciona os botoes ao painel
+        painel.add(btnCadastrarShow);
+        painel.add(btnCadastrarGenero);
+        painel.add(btnCadastrarLocal);
+        painel.add(btnVoltar);
 
-    dialog.getContentPane().add(painel);
-    dialog.pack();
-    dialog.setLocationRelativeTo(frame);
+        dialog.getContentPane().add(painel);
+        dialog.pack();
+        dialog.setLocationRelativeTo(frame);
 
-    // Ações dos botões
-    btnCadastrarShow.addActionListener(e -> {
-        dialog.dispose(); // fecha o diálogo antes
-        Show.cadastrarShow(); // chama o metodo cadastrar show
-    });
+        // Ações dos botões
+        btnCadastrarShow.addActionListener(e -> {
+            dialog.dispose(); // fecha o diálogo antes
+            Show.cadastrarShow(); // chama o metodo cadastrar show
+        });
 
-    btnCadastrarGenero.addActionListener(e -> {
-        dialog.dispose();
-        Genero.cadastrarGenero(frame); // Chama metodo para cadastrar genero
-    });
+        btnCadastrarGenero.addActionListener(e -> {
+            dialog.dispose();
+            Genero.cadastrarGenero(frame); // Chama metodo para cadastrar genero
+        });
 
-    btnCadastrarLocal.addActionListener(e -> {
-        dialog.dispose();
-        Local.cadastrarLocal(frame); // Chama metodo para cadastrar local
-    });
+        btnCadastrarLocal.addActionListener(e -> {
+            dialog.dispose();
+            Local.cadastrarLocal(frame); // Chama metodo para cadastrar local
+        });
 
-    btnVoltar.addActionListener(e -> dialog.dispose()); // Fecha o menu
+        btnVoltar.addActionListener(e -> dialog.dispose()); // Fecha o menu
 
-    dialog.setVisible(true); //Exibe o menu
+        dialog.setVisible(true); //Exibe o menu
+        }
     }
-}
