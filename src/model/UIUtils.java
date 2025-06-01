@@ -106,7 +106,7 @@ public class UIUtils {
         btn.setForeground(Color.DARK_GRAY);
         btn.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(new Color(180, 180, 180)),
-            BorderFactory.createEmptyBorder(10, 15, 10, 15)
+            BorderFactory.createEmptyBorder(7, 15, 7, 15)
         ));
         return btn;
     }
@@ -149,7 +149,7 @@ public class UIUtils {
     public static JPanel criarPainelBase(LayoutManager layout) {
         JPanel painel = new JPanel(layout);
         painel.setBackground(new Color(245, 245, 245));
-        painel.setBorder(BorderFactory.createEmptyBorder(20, 20, 0, 20));
+        painel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         return painel;
     }
 
