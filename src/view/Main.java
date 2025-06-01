@@ -44,7 +44,7 @@ public class Main {
         painel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Espacamento interno
 
         // Título e subtítulo
-       ImageIcon originalIcon = new ImageIcon("src\\imagens\\iconeshowzao.png");
+        ImageIcon originalIcon = new ImageIcon("src\\imagens\\iconeshowzao.png");
         Image imagemRedimensionada = originalIcon.getImage().getScaledInstance(250, 100, Image.SCALE_SMOOTH); // ajuste o tamanho aqui
         ImageIcon iconRedimensionado = new ImageIcon(imagemRedimensionada);
         // Label do titulo com imagem redimensionada
@@ -99,117 +99,55 @@ public class Main {
      * Exibe todos os shows cadastrados no sistema.
      * Se não houver shows cadastrados, uma mensagem de alerta é exibida.
      */
-public static void mostrarTodosOsShows() {
-    List<Show> shows = Show.getShows();
-    List<Genero> generos = Genero.getGeneros();
-    List<Local> locais = Local.getLocais();
+    public static void mostrarTodosOsShows() {
+        List<Show> shows = Show.getShows();
+        List<Genero> generos = Genero.getGeneros();
+        List<Local> locais = Local.getLocais();
 
-    if (shows.isEmpty()) {
-        JOptionPane.showMessageDialog(frame, "Não há shows cadastrados.");
-        return;
+        if (shows.isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Não há shows cadastrados.");
+            return;
+        }
+
+        JPanel painelShows = new JPanel();
+        painelShows.setLayout(new BoxLayout(painelShows, BoxLayout.Y_AXIS));
+        painelShows.setBackground(new Color(245, 245, 245));
+        painelShows.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        final JDialog[] dialog = new JDialog[1];
+
+        for (Show show : shows) {
+            JPanel cardShow = UIUtils.criarCardShow(show, generos, locais, frame, () -> {
+                dialog[0].dispose();
+                mostrarTodosOsShows();
+            });
+
+            painelShows.add(cardShow);
+            painelShows.add(Box.createVerticalStrut(15));
+        }
+
+        JScrollPane scrollPane = new JScrollPane(painelShows);
+        scrollPane.setPreferredSize(new Dimension(380, 300));
+        scrollPane.getVerticalScrollBar().setUnitIncrement(12);
+
+        JButton okButton = UIUtils.criarBotao("OK");
+
+        JOptionPane optionPane = new JOptionPane(
+            scrollPane,
+            JOptionPane.PLAIN_MESSAGE,
+            JOptionPane.DEFAULT_OPTION,
+            null,
+            new Object[]{okButton},
+            okButton
+        );
+
+        dialog[0] = optionPane.createDialog(frame, "Shows Cadastrados");
+
+        okButton.addActionListener(e -> dialog[0].dispose());
+
+        dialog[0].setVisible(true);
     }
 
-    JPanel painelShows = new JPanel();
-    painelShows.setLayout(new BoxLayout(painelShows, BoxLayout.Y_AXIS));
-    painelShows.setBackground(new Color(245, 245, 245));
-    painelShows.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-    final JDialog[] dialog = new JDialog[1];
-
-    for (Show show : shows) {
-        JPanel cardShow = new JPanel();
-        cardShow.setLayout(new BoxLayout(cardShow, BoxLayout.Y_AXIS));
-        cardShow.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(200, 200, 200), 1, true),
-            BorderFactory.createEmptyBorder(10, 10, 10, 10)
-        ));
-        cardShow.setBackground(Color.WHITE);
-        cardShow.setAlignmentX(Component.LEFT_ALIGNMENT);
-        cardShow.setMaximumSize(new Dimension(360, Integer.MAX_VALUE));
-
-        String nomeGenero = generos.stream()
-                .filter(g -> g.id == show.codGenero)
-                .map(g -> g.nome)
-                .findFirst()
-                .orElse("Desconhecido");
-
-        String nomeLocal = locais.stream()
-                .filter(l -> l.id == show.codLocal)
-                .map(l -> l.nome)
-                .findFirst()
-                .orElse("Desconhecido");
-
-        JLabel lblNome = new JLabel(show.nome);
-        lblNome.setFont(new Font("Segoe UI Emoji", Font.BOLD, 16));
-        lblNome.setForeground(new Color(44, 62, 80));
-
-        JLabel lblLocal = new JLabel("Local: " + nomeLocal);
-        lblLocal.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 14));
-        lblLocal.setForeground(new Color(80, 80, 80));
-
-        JLabel lblData = new JLabel("Data: " + show.data);
-        lblData.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 14));
-        lblData.setForeground(new Color(80, 80, 80));
-
-        JLabel lblGenero = new JLabel("<html>Gênero: " + nomeGenero + "</html>");
-        lblGenero.setFont(new Font("Segoe UI Emoji", Font.ITALIC, 13));
-        lblGenero.setForeground(new Color(120, 120, 120));
-
-        JLabel lblLink = new JLabel("<html><a href=\"" + show.link + "\">Link do show</a></html>");
-        lblLink.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 13));
-        lblLink.setForeground(new Color(10, 102, 194));
-        lblLink.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        lblLink.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                try {
-                    java.awt.Desktop.getDesktop().browse(new java.net.URI(show.link));
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(frame, "Não foi possível abrir o link.");
-                }
-            }
-        });
-
-        // Aqui usamos UIUtils para criar o botão Excluir
-        JButton btnExcluir = UIUtils.criarBotaoExcluir(show, frame, () -> {
-            dialog[0].dispose();
-            mostrarTodosOsShows();
-        });
-
-        cardShow.add(lblNome);
-        cardShow.add(Box.createVerticalStrut(5));
-        cardShow.add(lblLocal);
-        cardShow.add(lblData);
-        cardShow.add(lblGenero);
-        cardShow.add(Box.createVerticalStrut(5));
-        cardShow.add(lblLink);
-        cardShow.add(Box.createVerticalStrut(10));
-        cardShow.add(btnExcluir);
-
-        painelShows.add(cardShow);
-        painelShows.add(Box.createVerticalStrut(15));
-    }
-
-    JScrollPane scrollPane = new JScrollPane(painelShows);
-    scrollPane.setPreferredSize(new Dimension(380, 300));
-    scrollPane.getVerticalScrollBar().setUnitIncrement(12);
-
-    JButton okButton = UIUtils.criarBotao("OK");
-
-    JOptionPane optionPane = new JOptionPane(
-        scrollPane,
-        JOptionPane.PLAIN_MESSAGE,
-        JOptionPane.DEFAULT_OPTION,
-        null,
-        new Object[]{okButton},
-        okButton
-    );
-
-    dialog[0] = optionPane.createDialog(frame, "Shows Cadastrados");
-
-    okButton.addActionListener(e -> dialog[0].dispose());
-
-    dialog[0].setVisible(true);
-}
 
 
 
