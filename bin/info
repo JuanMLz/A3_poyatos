@@ -1,0 +1,2 @@
+// Comando para iniciar os testes
+java -cp "bin;lib/*" org.junit.platform.console.ConsoleLauncher --scan-class-path

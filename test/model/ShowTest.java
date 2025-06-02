@@ -3,50 +3,98 @@ package model;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
+import dao.Conexao;
+
 public class ShowTest {
 
+    private Connection mockConnection;
+    private PreparedStatement mockPreparedStatement;
+    private ResultSet mockResultSet;
+
+    @BeforeEach
+    public void setup() throws Exception {
+        mockConnection = mock(Connection.class);
+        mockPreparedStatement = mock(PreparedStatement.class);
+        mockResultSet = mock(ResultSet.class);
+    }
+
     @Test
-    public void testGetShows() throws Exception {
-        // Mock dos objetos do JDBC
-        Connection mockConn = mock(Connection.class);
-        PreparedStatement mockPs = mock(PreparedStatement.class);
-        ResultSet mockRs = mock(ResultSet.class);
-
-        // Mock estático do método Conexao.getConexao()
+    public void testGetShows_ReturnsListOfShows() throws Exception {
+        // Mock do Conexao.getConexao() para retornar mockConnection
         try (MockedStatic<Conexao> mockedConexao = mockStatic(Conexao.class)) {
-            mockedConexao.when(Conexao::getConexao).thenReturn(mockConn);
+            mockedConexao.when(Conexao::getConexao).thenReturn(mockConnection);
 
-            when(mockConn.prepareStatement(anyString())).thenReturn(mockPs);
-            when(mockPs.executeQuery()).thenReturn(mockRs);
+            String sql = "SELECT id, nome, data, codGenero, codLocal, link FROM shows ORDER BY nome";
 
-            // Configura o ResultSet para simular dois shows
-            when(mockRs.next()).thenReturn(true, true, false); // 2 registros + fim
-            when(mockRs.getInt("id")).thenReturn(1, 2);
-            when(mockRs.getString("nome")).thenReturn("Show 1", "Show 2");
-            when(mockRs.getString("data")).thenReturn("01/01", "02/02");
-            when(mockRs.getInt("codGenero")).thenReturn(10, 20);
-            when(mockRs.getInt("codLocal")).thenReturn(100, 200);
-            when(mockRs.getString("link")).thenReturn("link1", "link2");
+            when(mockConnection.prepareStatement(sql)).thenReturn(mockPreparedStatement);
+            when(mockPreparedStatement.executeQuery()).thenReturn(mockResultSet);
+
+            // Configura o mock para simular dados retornados pelo ResultSet
+            when(mockResultSet.next()).thenReturn(true, true, false); // 2 registros
+            when(mockResultSet.getInt("id")).thenReturn(1, 2);
+            when(mockResultSet.getString("nome")).thenReturn("Show A", "Show B");
+            when(mockResultSet.getString("data")).thenReturn("01/01", "02/02");
+            when(mockResultSet.getInt("codGenero")).thenReturn(10, 20);
+            when(mockResultSet.getInt("codLocal")).thenReturn(100, 200);
+            when(mockResultSet.getString("link")).thenReturn("linkA", "linkB");
 
             List<Show> shows = Show.getShows();
 
+            assertNotNull(shows);
             assertEquals(2, shows.size());
 
-            Show primeiro = shows.get(0);
-            assertEquals(1, primeiro.id);
-            assertEquals("Show 1", primeiro.nome);
-            assertEquals("01/01", primeiro.data);
-            assertEquals(10, primeiro.codGenero);
-            assertEquals(100, primeiro.codLocal);
-            assertEquals("link1", primeiro.link);
+            Show first = shows.get(0);
+            assertEquals(1, first.id);
+            assertEquals("Show A", first.nome);
+            assertEquals("01/01", first.data);
+            assertEquals(10, first.codGenero);
+            assertEquals(100, first.codLocal);
+            assertEquals("linkA", first.link);
         }
     }
+
+    @Test
+    public void testCadastrarShow_CallsExecuteUpdate() throws Exception {
+        try (MockedStatic<Conexao> mockedConexao = mockStatic(Conexao.class)) {
+            mockedConexao.when(Conexao::getConexao).thenReturn(mockConnection);
+            when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
+
+            doNothing().when(mockPreparedStatement).setString(anyInt(), anyString());
+            doNothing().when(mockPreparedStatement).setInt(anyInt(), anyInt());
+            when(mockPreparedStatement.executeUpdate()).thenReturn(1);
+
+            Show show = new Show(0, "Show Teste", "10/10", 1, 1, "link");
+
+            // Método estático que insere no banco
+            Show.cadastrar(show);
+
+            verify(mockPreparedStatement, times(1)).executeUpdate();
+        }
+    }
+
+    @Test
+    public void testRemoverShow_DeletesShow() throws Exception {
+        try (MockedStatic<Conexao> mockedConexao = mockStatic(Conexao.class)) {
+            mockedConexao.when(Conexao::getConexao).thenReturn(mockConnection);
+            when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
+
+            when(mockPreparedStatement.executeUpdate()).thenReturn(1);
+
+            Show show = new Show();
+            show.id = 123;
+
+            Show.removerShow(show);
+
+            verify(mockPreparedStatement).setInt(1, 123);
+            verify(mockPreparedStatement).executeUpdate();
+        }
+    }
+
 }
