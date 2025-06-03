@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 
 public class Conexao {
     // URL de conexão com o banco de dados MySQL
-    private static final String url = "jdbc:mysql://showzao-1.cgl8msa80fmh.us-east-1.rds.amazonaws.com:3306/showzao_1";
+    private static final String url = "jdbc:mysql://showzao.cgl8msa80fmh.us-east-1.rds.amazonaws.com:3306/showzao";
     
     // Usuário e senha de acesso ao banco de dados
     private static final String USER = "admin";
