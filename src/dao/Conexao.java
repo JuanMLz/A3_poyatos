@@ -12,7 +12,7 @@ public class Conexao {
     
     // Usuário e senha de acesso ao banco de dados
     private static final String USER = "admin";
-    private static final String PASSWORD = "";
+    private static final String PASSWORD = "showzao123";
 
     /**
      * Estabelece e retorna uma conexão com o banco de dados MySQL.
