@@ -96,3 +96,45 @@ A refatoração deste código visa melhorar os seguintes aspectos:
 - Melhoria na modularização e legibilidade do código, com a utilização de funções e classes bem definidas, tornando o código mais fácil de entender e manter.
 - Aprimoramento da interface do usuário, com menus interativos e visualmente mais organizados para facilitar a navegação e usabilidade do sistema.
 - Implementação de comentarios em todo o codigo.
+- **Criação de testes unitários utilizando JUnit** para validar as funcionalidades do código. Os testes foram realizados para as funcionalidades de **Gênero**, **Local** e **Show**, garantindo que o comportamento do sistema permanecesse correto após a refatoração.
+
+---
+
+## Testes Unitários
+
+Foram criados testes unitários utilizando **JUnit** para validar as funcionalidades de **Gênero**, **Local** e **Show**. Abaixo estão os principais testes realizados:
+
+### Gênero
+
+1. **Testar recuperação de gêneros do banco de dados**: Verifica se o método `getGeneros()` retorna corretamente a lista de gêneros.
+2. **Tratar exceções ao recuperar gêneros**: Testa o comportamento do sistema ao ocorrer um erro de banco de dados, garantindo que a lista seja vazia e uma mensagem de erro seja exibida.
+3. **Cadastrar novo gênero**: Verifica se o método `cadastrarGeneroDialog()` permite o cadastro de um novo gênero e retorna o ID correto.
+4. **Tentar cadastrar gênero já existente**: Verifica se o sistema impede o cadastro de um gênero que já está no banco de dados.
+
+Esses testes ajudam a garantir a confiabilidade das funcionalidades relacionadas aos gêneros musicais no sistema.
+
+### Local
+
+1. **Testar recuperação de locais do banco de dados**: Verifica se o método `getLocais()` retorna corretamente a lista de locais.
+2. **Tratar exceções ao recuperar locais**: Testa o comportamento do sistema ao ocorrer um erro de banco de dados, garantindo que a lista seja vazia e uma mensagem de erro seja exibida.
+3. **Cadastrar novo local**: Verifica se o método `cadastrarLocalDialog()` permite o cadastro de um novo local e retorna o ID correto.
+4. **Tentar cadastrar local já existente**: Verifica se o sistema impede o cadastro de um local que já está no banco de dados.
+5. **Entrada cancelada no cadastro de local**: Verifica se o sistema lida corretamente quando o usuário cancela a operação de cadastro de um local.
+
+Esses testes ajudam a garantir a confiabilidade das funcionalidades relacionadas aos locais no sistema.
+
+### Show
+
+1. **Testar recuperação de shows do banco de dados**: Verifica se o método `getShows()` retorna corretamente a lista de shows.
+2. **Cadastrar novo show**: Verifica se o método `cadastrar()` insere um novo show no banco de dados corretamente.
+3. **Remover show**: Verifica se o método `removerShow()` exclui corretamente um show do banco de dados.
+
+Esses testes ajudam a garantir a confiabilidade das funcionalidades relacionadas aos shows no sistema.
+
+---
+
+## Conclusão
+
+A refatoração realizada teve como objetivo melhorar a organização, legibilidade, desempenho e manutenibilidade do código, além de proporcionar uma interface mais amigável para o usuário. Os testes unitários garantiram que as funcionalidades do sistema permanecessem intactas após a refatoração, promovendo maior confiança no desenvolvimento contínuo do projeto.
+
+---
